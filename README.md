@@ -1,3 +1,7 @@
+# Úvodní obrazovka k mapathonu
+
+[Linky na aktuální mapathon a tak vůbec](offlineLandingPage/)
+
 # Základní instalace JOSM 
 
 [Návod k instalaci](JOSMmissingmaps.html) (Windows, Mac, Linux - všechno má svá špecifiká, ale všude se to dá zprovoznit)
