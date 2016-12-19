@@ -1,0 +1,18 @@
+{
+  "current": 2398,
+  "currentMapathon": {
+    "ids": {
+      "basic": 2359,
+      "advanced": 2398
+    },
+    "name": "Aweil",
+    "start": "2016-12-19",
+    "location": {
+      "address": "U úlů",
+      "lat": "50.12249",
+      "lon": "14.63599",
+      "zoom": null,
+      "link": "https://openstreetmap.cz/way/8072073"
+    }
+  }
+}

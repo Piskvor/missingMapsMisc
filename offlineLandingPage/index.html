@@ -14,13 +14,13 @@
     <link rel="stylesheet" href="mm.css"/>
     <script>
         var rnd = Math.random();
-        Offline.options = {checks: {image: {url: 'http://osm.piskvor.org/favicon.ico?_' + rnd}, active: 'image'}};
+        Offline.options = {checks: {image: {url: 'https://piskvor.github.io/missingMapsMisc/offlineLandingPage/josm.png?_' + rnd}, active: 'image'}};
 
         var doCheckTask = function($) {
             $('.mm-is-offline').hide();
             $('.mm-is-online-checking').show();
             $.ajax({
-                url: 'http://osm.piskvor.org/mm.json',
+                url: 'https://piskvor.github.io/missingMapsMisc/mm.json',
                 method: 'GET',
                 dataType: 'json',
                 cache: false,
@@ -59,12 +59,13 @@
 </head>
 <body>
 <h1><a href="https://www.facebook.com/groups/missingmapscz/">#missingMaps</a> mapathon</h1>
-<div class="mm-is-offline show">čekám na připojení k internetu</div>
-<div class="mm-is-online-checking hide">načítám aktuální data</div>
+<div class="mm-is-offline show">Čekám na připojení k internetu</div>
+<div class="mm-is-online-checking hide">Načítám aktuální data...</div>
 <div class="mm-is-online-done hide">Aktuální mapathon</div>
 <div class="mm-is-offline mm-is-online-checking show"><a href="http://tasks.hotosm.org/" target="_blank">HOT tasking manager - tasks.hotosm.org</a></div>
-<div class="mm-is-offline mm-is-online-checking show"><a href="https://osmlab.github.io/show-me-the-way/#comment=missingmaps"target="_blank">Sledování změn</a></div>
+<div class="mm-is-offline mm-is-online-checking show"><a href="https://osmlab.github.io/show-me-the-way/#comment=missingmaps" target="_blank">Sledování změn</a></div>
 <div class="mm-is-online-done hide"><a class="mm-link" href="http://tasks.hotosm.org/" data-href="http://tasks.hotosm.org/project/__ID__" target="_blank">HOT tasking manager - task #__ID__</a></div>
 <div class="mm-is-online-done hide"><a class="mm-link" href="https://osmlab.github.io/show-me-the-way/" data-href="https://osmlab.github.io/show-me-the-way/#comment=hotosm-project-__ID__" target="_blank">Sledování změn - #__ID__</a></div>
+<div><a href="https://piskvor.github.io/missingMapsMisc/">Technické návody</a></div>
 </body>
 </html>
