@@ -41,7 +41,7 @@ var doCheckTask = function ($) {
     $('.mm-is-offline').hide();
     $('.mm-is-online-checking').show();
     $.ajax({
-        url: '/mm.json',
+        url: 'https://piskvor.github.io/missingMapsMisc/mm.json',
         method: 'GET',
         dataType: 'json',
         cache: false,
