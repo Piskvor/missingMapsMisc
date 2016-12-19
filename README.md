@@ -6,6 +6,8 @@
 
 Pokud máte Firefox, lze si stáhnout jednoduchý skript pro zjednodušení práce s GPX soubory: [Open in JOSM](Open_in_JOSM/Open_in_JOSM.user.js). *Vyžaduje rozšíření [Greasemonkey](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/)*
 
+Zatím umí otevírat linky a samotnou stránku projektu - pokud potřebujete otevírat výběr, uložte si do záložek [Open selection in JOSM](javascript:void(function(){var s=window.getSelection();if(s.toString().indexOf('http')===0){if(window.osm_piskvor_org_josm_open){osm_piskvor_org_josm_open(s,true)}};}())) - volá JOSM skrze ten usercript. 
+
 # Pokročilé možnosti
 
 Pokud vám nefunguje spuštění na Macu, je třeba kliknout pravým a potvrdit otevření, [viz](https://josm.openstreetmap.de/wiki/Download#MacOSXerrors). 

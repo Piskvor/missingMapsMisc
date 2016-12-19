@@ -13,8 +13,8 @@
 // @license         WTFPL http://sam.zoy.org/wtfpl/COPYING
 // @include         http://tasks.hotosm.org/project/*
 // @include         *.gpx
-// @updateURL       https://gist.github.com/Piskvor/48f56a51ef3a2e4dbcecb1882a24695d
-// @icon            http://osm.piskvor.org/josm.png
+// @updateURL       https://piskvor.github.io/missingMapsMisc/Open_in_JOSM/Open_in_JOSM.user.js
+// @icon            https://piskvor.github.io/missingMapsMisc/offlineLandingPage/josm.png
 // @grant           none
 // ==/UserScript==
 
@@ -89,7 +89,12 @@ new function () { // do not pollute global scope
 
     // actually sends the request out - by opening a new tab
     function share(e) {
-        var url = e.target.getAttribute("url");
+        var url;
+        if (typeof(e['target']) == 'undefined') {
+            url = e.toString();
+        } else {
+            url = e.target.getAttribute("url");
+        }
         var hasHash = url.indexOf('#');
         if (hasHash !== -1) {
             var hash = url.substring(hasHash + 1);
@@ -110,5 +115,8 @@ new function () { // do not pollute global scope
         open(loadUrl,
             name, feature);
     }
+
+    // export the "share" function to bookmarklets
+    unsafeWindow.osm_piskvor_org_josm_open = share;
 
 }(); // call self
