@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>#missingMaps</title>
+    <script src="zepto.min.js" integrity="sha384-Fr6YIw8steUKRYhcumTlUAYiegQwe39jSM1a3XXugVfkH9Hnuv9+BhnJ7nLwKiGJ"
+            crossorigin="anonymous"></script>
+    <script src="offline.min.js" integrity="sha384-Bj9xDKrR2zWeE7OL/xjvsCyehopovk/tyYg1raM9W5ykQ6Bk7Gt9vwhCIZfQOIVy"
+            crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="offline-theme-slide.css"/>
+
+    <link rel="stylesheet" href="offline-language-czech.css"/>
+    <link rel="stylesheet" href="mm.css"/>
+    <script>
+        var rnd = Math.random();
+        Offline.options = {checks: {image: {url: 'http://osm.piskvor.org/favicon.ico?_' + rnd}, active: 'image'}};
+
+        var doCheckTask = function($) {
+            $('.mm-is-offline').hide();
+            $('.mm-is-online-checking').show();
+            $.ajax({
+                url: 'http://osm.piskvor.org/mm.json',
+                method: 'GET',
+                dataType: 'json',
+                cache: false,
+		timeout: 30000,
+                success: function(data, status, xhr) {
+	            $('.mm-is-online-checking').hide();
+	            $('.mm-is-online-done').show();
+		    $('.mm-link').each(function(idx,xlink){
+			var link = $(xlink);
+	     		link.attr('href',link.data('href').replace('__ID__',data.current));
+		    	link.text(link.text().replace('__ID__',data.current));
+		    });
+                },
+                error: function (xhr, errorType, error) {
+                    Offline.check();
+                }
+            })
+        };
+
+        Offline.on('up', function () {
+        	doCheckTask(Zepto);
+        });
+        Offline.on('down', function () {
+	    Zepto('.hide').hide();
+	    Zepto('.show').show();
+        });
+
+        Zepto(function($){
+	    $('.hide').hide();
+            Offline.check()
+            doCheckTask($);
+        });
+
+
+    </script>
+</head>
+<body>
+<h1><a href="https://www.facebook.com/groups/missingmapscz/">#missingMaps</a> mapathon</h1>
+<div class="mm-is-offline show">čekám na připojení k internetu</div>
+<div class="mm-is-online-checking hide">načítám aktuální data</div>
+<div class="mm-is-online-done hide">Aktuální mapathon</div>
+<div class="mm-is-offline mm-is-online-checking show"><a href="http://tasks.hotosm.org/" target="_blank">HOT tasking manager - tasks.hotosm.org</a></div>
+<div class="mm-is-offline mm-is-online-checking show"><a href="https://osmlab.github.io/show-me-the-way/#comment=missingmaps"target="_blank">Sledování změn</a></div>
+<div class="mm-is-online-done hide"><a class="mm-link" href="http://tasks.hotosm.org/" data-href="http://tasks.hotosm.org/project/__ID__" target="_blank">HOT tasking manager - task #__ID__</a></div>
+<div class="mm-is-online-done hide"><a class="mm-link" href="https://osmlab.github.io/show-me-the-way/" data-href="https://osmlab.github.io/show-me-the-way/#comment=hotosm-project-__ID__" target="_blank">Sledování změn - #__ID__</a></div>
+</body>
+</html>
