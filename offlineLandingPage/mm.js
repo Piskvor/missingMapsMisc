@@ -41,7 +41,7 @@ var doCheckTask = function ($) {
     $('.mm-is-offline').hide();
     $('.mm-is-online-checking').show();
     $.ajax({
-        url: 'https://piskvor.github.io/missingMapsMisc/mm.json',
+        url: '/mm.json',
         method: 'GET',
         dataType: 'json',
         cache: false,
@@ -51,7 +51,7 @@ var doCheckTask = function ($) {
             $('.mm-is-online-done').show();
             if (data.currentMapathon) {
                 var loopBy = ['basic','advanced'];
-                for (var i = loopBy.length - 1; loopBy.length >= 0; i--) {
+                for (var i = loopBy.length - 1; i >= 0; i--) {
                     if (data.currentMapathon.projects[loopBy[i]]) {
                         var project = data.currentMapathon.projects[loopBy[i]];
                         $('.mm-' + loopBy[i] + ' .mm-link').each(function (idx, xlink) {
