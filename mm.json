@@ -1,14 +1,21 @@
 {
   "current": 2398,
   "currentMapathon": {
-    "ids": {
-      "basic": 2359,
-      "advanced": 2398
+    "projects": {
+      "basic": {
+        "id": 2398,
+        "name": "Aweil"
+      },
+      "advanced": {
+        "id": 2359,
+        "name": "Haiti - Port au Prince"
+      }
     },
-    "name": "Aweil",
-    "start": "2016-12-19",
+    "name": "Giving Tuesday",
+    "start": "2016-12-16 18:00:00",
     "location": {
-      "address": "U úlů",
+      "name": "Paralelní police",
+      "address": "U úlů 1234, Praha",
       "lat": "50.12249",
       "lon": "14.63599",
       "zoom": null,
