@@ -1,0 +1,16 @@
+{
+  "extensionName": {
+    "message": "Načíst v JOSM",
+    "description": "Name of the extension."
+  },
+
+  "extensionDescription": {
+    "message": "Otevřít data (GPX stopu, obrázek, atd.) skrze kontextové menu a Dálkové ovládání v JOSM.",
+    "description": "Description of the add-on."
+  },
+
+  "contextMenuItemOpenInJosm": {
+    "message": "Načíst v JOSM",
+    "description": "Title of context menu item - same for selection/link/page."
+  }
+}
