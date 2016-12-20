@@ -13,7 +13,7 @@
 // @license         WTFPL http://sam.zoy.org/wtfpl/COPYING
 // @include         http://tasks.hotosm.org/project/*
 // @include         *.gpx
-// @updateURL       https://piskvor.github.io/missingMapsMisc/Open_in_JOSM/Open_in_JOSM.user.js
+// @updateURL       https://piskvor.github.io/missingMapsMisc/Open_in_JOSM_userscript/Open_in_JOSM.user.js
 // @icon            https://piskvor.github.io/missingMapsMisc/offlineLandingPage/josm.png
 // @grant           none
 // ==/UserScript==
