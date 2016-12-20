@@ -1,3 +1,10 @@
+// fix for *special* browsers
+browser = (function () {
+    return window.msBrowser ||
+        window.browser ||
+        window.chrome;
+})();
+
 // actually sends the request out - by opening a new tab
 function osm_piskvor_org_share(e) {
     // we need to hardcode this, JOSM doesn't let us configure
