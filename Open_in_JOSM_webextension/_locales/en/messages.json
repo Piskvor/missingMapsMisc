@@ -3,12 +3,10 @@
     "message": "Open in JOSM",
     "description": "Name of the extension."
   },
-
   "extensionDescription": {
     "message": "Open data (GPX track, image, etc.) through JOSM's Remote Control from browser's context menu.",
     "description": "Description of the add-on."
   },
-
   "contextMenuItemOpenInJosm": {
     "message": "Open in JOSM",
     "description": "Title of context menu item - same for selection/link/page."

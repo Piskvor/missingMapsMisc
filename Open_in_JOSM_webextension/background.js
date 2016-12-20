@@ -7,7 +7,7 @@ browser = (function () {
 
 // actually sends the request out - by opening a new tab
 function osm_piskvor_org_share(e) {
-    // we need to hardcode this, JOSM doesn't let us configure
+    // we need to hard-code this, JOSM doesn't let us configure
     const josmURL = "http://localhost:8111/import?url=";
 
     let url;
