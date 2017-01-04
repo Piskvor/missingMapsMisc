@@ -8,12 +8,12 @@
 // @name            Open in JOSM
 // @namespace       http://osm.piskvor.org/
 // @description     Open a page (GPX track, image, etc.) through JOSM's Remote Control from browser's context menu
-// @version         1.0
+// @version         1.0.1
 // @author          Piskvor, from original script by LouCypher
 // @license         WTFPL http://sam.zoy.org/wtfpl/COPYING
 // @include         http://tasks.hotosm.org/project/*
 // @include         *.gpx
-// @updateURL       https://piskvor.github.io/missingMapsMisc/Open_in_JOSM_userscript/Open_in_JOSM.user.js
+// @updateURL       https://piskvor.github.io/missingMapsMisc/userscripts/Open_in_JOSM/Open_in_JOSM.user.js
 // @icon            https://piskvor.github.io/missingMapsMisc/offlineLandingPage/josm.png
 // @grant           none
 // ==/UserScript==

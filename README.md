@@ -8,7 +8,7 @@
 
 ## Pomocný skript do Chrome/Firefoxu
 
-Pokud máte Firefox, lze si stáhnout jednoduchý skript pro zjednodušení práce s GPX soubory: [Open in JOSM](Open_in_JOSM_userscript/Open_in_JOSM.user.js). *Vyžaduje rozšíření [Greasemonkey](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/)*
+Pokud máte Firefox, lze si stáhnout jednoduchý skript pro zjednodušení práce s GPX soubory: [Open in JOSM](userscripts/Open_in_JOSM/Open_in_JOSM.user.js). *Vyžaduje rozšíření [Greasemonkey](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/)*
 
 Zatím umí otevírat linky a samotnou stránku projektu - pokud potřebujete otevírat výběr, uložte si do záložek [Open selection in JOSM](javascript:void(function(){var s=window.getSelection().toString();if(s==''){var formula=document.getElementById('t-formula-bar-input');if(formula['innerText']!=null){s=formula.innerText}};if(s.indexOf('http')==0){if(typeof(osm_piskvor_org_josm_open)!="undefined"){osm_piskvor_org_josm_open(s,true)}};}())) - volá JOSM skrze ten usercript. 
 
