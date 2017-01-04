@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Deemphasize complete projects
 // @namespace    http://osm.piskvor.org/
-// @version      0.2
+// @version      0.3
 // @description  Don't clutter project list with completed ones (100%)
 // @author       Piskvor
 // @license      WTFPL http://sam.zoy.org/wtfpl/COPYING
@@ -25,7 +25,8 @@
     };
 
     var deemphasize = function($percent, pct) {
-        if (pct == '100') {
+        //noinspection EqualityComparisonWithCoercionJS
+        if (pct == 100) {
             var $project = $percent.closest(".project");
             if ($project.length) {
                 $project.children().not(".project-stats").not('.clear,h4').hide();
@@ -33,6 +34,7 @@
             }
         }
     };
+
     jQuery(function($){
         addGlobalStyle('.deemphasize { opacity: 0.5 }');
 
