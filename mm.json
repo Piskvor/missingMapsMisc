@@ -7,19 +7,20 @@
         "name": "Aweil"
       },
       "advanced": {
-        "id": 2359,
-        "name": "Haiti - Port au Prince"
+        "id": 2398,
+        "name": "Aweil"
       }
     },
-    "name": "Giving Tuesday",
-    "start": "2016-12-16 18:00:00",
+    "name": "lednový mapathon MSF",
+    "start": "2017-01-31 18:00:00",
     "location": {
-      "name": "Paralelní police",
-      "address": "U úlů 1234, Praha",
-      "lat": "50.12249",
-      "lon": "14.63599",
-      "zoom": null,
-      "link": "https://openstreetmap.cz/way/8072073"
+      "name": "Opero",
+      "address": "Salvátorská 931/8, Praha 1",
+      "lat": "50.08862",
+      "lon": "14.4210565",
+      "zoom": 16,
+      "map": "https://openstreetmap.cz/node/4556733089#map=16/50.0883/14.4227",
+      "link": "http://www.opero.cz/cs"
     }
   }
 }
