@@ -76,7 +76,22 @@ var doCheckTask = function ($) {
                 $("#current-mapathon-name").text(data.currentMapathon.name);
                 $("#current-mapathon-location").prop("href",data.currentMapathon.location.link).text(data.currentMapathon.location.name);
                 $("#current-mapathon-map").prop("href",data.currentMapathon.location.map).text(data.currentMapathon.location.address);
-                var startDate = new Date(Date.parse(data.currentMapathon.start));
+                var startDate = null;
+                var dateTS = Date.parse(data.currentMapathon.start);
+                if (dateTS && 0) {
+                    startDate = new Date().setTime(dateTS);
+                } else {
+                    var dates = data.currentMapathon.start.match(/((19|20)\d\d)([- /.])(0[1-9]|1[012])\3(0[1-9]|[12][0-9]|3[01]) ([012]?[0-9]):([0-5]?[0-9])/);
+                    if (dates) {
+                        startDate = new Date();
+                        startDate.setFullYear(dates[1]);
+                        startDate.setMonth(dates[4] - 1);
+                        startDate.setDate(dates[5]);
+                        startDate.setHours(dates[6]);
+                        startDate.setMinutes(dates[7]);
+                    }
+                }
+
                 if (startDate) {
                     var day = startDate.getDate();
                     var monthIndex = startDate.getMonth();
