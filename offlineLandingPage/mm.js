@@ -55,8 +55,8 @@ var doCheckTask = function ($) {
         success: function (data) {
             $('.mm-is-online-checking').hide();
             $('.mm-is-online-done').show();
+            $('body').addClass('mm-is-page-online');
             if (data.currentMapathon) {
-                console.log(data.currentMapathon);
                 var loopBy = ['basic','advanced'];
                 for (var i = loopBy.length - 1; i >= 0; i--) {
                     if (data.currentMapathon.projects[loopBy[i]]) {
@@ -109,6 +109,7 @@ Offline.on('up', function () {
 Offline.on('down', function () {
     Zepto('.hide').hide();
     Zepto('.show').show();
+    $('body').removeClass('mm-is-page-online');
 });
 
 Zepto(function ($) {

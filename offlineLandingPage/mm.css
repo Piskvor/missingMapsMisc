@@ -1,10 +1,16 @@
 body {
-	background: url('mm.png');
+	background: url('mm-query.png');
 	background-size: 100%;
 }
 
+body.mm-is-page-online {
+	background: url('mm.png') !important;
+	background-size: 100% !important;
+}
+
 h1 {
-	margin-top: 60px; text-align: center; font-family: helvetica;
+	margin-top: 60px; text-align: center;
+	font-family: helvetica, serif;
 }
 
 h1 a {
