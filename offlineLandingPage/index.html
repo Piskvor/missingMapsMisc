@@ -15,10 +15,12 @@
     <script src="mm.js"></script>
 </head>
 <body>
-<h1><a href="https://www.facebook.com/groups/missingmapscz/">#missingMaps</a> mapathon</h1>
+<h1><a href="https://www.facebook.com/groups/missingmapscz/">#missingMaps</a> <span id="current-mapathon-name">mapathon</span></h1>
 <div class="mm-is-offline show">Čekám na připojení k internetu</div>
 <div class="mm-is-online-checking hide">Načítám aktuální data...</div>
-<div class="mm-is-online-done hide">Aktuální mapathon</div>
+<div class="mm-is-online-done current-mapathon hide">
+    Nejbližší mapathon je v <a id="current-mapathon-location" href="#" target="_blank"></a><span class="date-part hide">, <span id="current-mapathon-date"></span></span> (mapa: <a id="current-mapathon-map" href="#" target="_blank"></a>)
+</div>
 <div class="mm-is-offline mm-is-online-checking show">
     <a href="http://tasks.hotosm.org/" target="_blank">HOT tasking manager - tasks.hotosm.org</a>
 </div>
@@ -27,24 +29,24 @@
 </div>
 <div class="mm-is-online-done mm-basic hide">
     <a class="mm-link" href="http://tasks.hotosm.org/" data-href="http://tasks.hotosm.org/project/__ID__"
-       target="_blank">Základní mapování: #__ID__ - __NAME__</a>
+       target="_blank">Základní mapování (v prohlížeči, tj. editor iD): #__ID__ - __NAME__</a>
 </div>
-<div class="mm-is-online-done mm-basic hide">
+<div class="mm-is-online-done mm-basic less-interesting hide">
     <a class="mm-link" href="https://osmlab.github.io/show-me-the-way/"
        data-href="https://osmlab.github.io/show-me-the-way/#comment=hotosm-project-__ID__" target="_blank">Sledování
         změn: #__ID__ - __NAME__</a>
 </div>
 <div class="mm-is-online-done mm-advanced hide">
     <a class="mm-link" href="http://tasks.hotosm.org/" data-href="http://tasks.hotosm.org/project/__ID__"
-       target="_blank">Pokročilé mapování: #__ID__ - __NAME__</a>
+       target="_blank">Pokročilé mapování (v JOSM): #__ID__ - __NAME__</a>
 </div>
-<div class="mm-is-online-done mm-advanced hide">
+<div class="mm-is-online-done mm-advanced less-interesting hide">
     <a class="mm-link" href="https://osmlab.github.io/show-me-the-way/"
        data-href="https://osmlab.github.io/show-me-the-way/#comment=hotosm-project-__ID__" target="_blank">Sledování
         změn: #__ID__ - __NAME__</a>
 </div>
-<div>
-    <a href="https://piskvor.github.io/missingMapsMisc/">Technické návody</a>
+<div class="tech-help">
+    <a href="https://piskvor.github.io/missingMapsMisc/">Technické návody k JOSM</a>
 </div>
 </body>
 </html>

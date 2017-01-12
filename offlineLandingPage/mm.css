@@ -14,3 +14,15 @@ h1 a {
 a {
 	color: navy;
 }
+
+.less-interesting {
+	font-size: smaller;
+}
+
+.tech-help {
+	margin-top: 1em;
+}
+
+.current-mapathon {
+	margin-bottom: 1em;
+}

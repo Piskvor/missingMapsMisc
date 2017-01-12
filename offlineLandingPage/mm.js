@@ -8,14 +8,13 @@ Offline.options = {
     }
 };
 
-if (0) {
-// dummy structure for parsing
+if (0) { // dummy structure for JS code hinting, never gets executed
     var data = {
         "current": 2398, // task to do if there's no mapathon currently running
         "currentMapathon": {
             "projects": {
                 "basic": { // editing with iD
-                    "id": 2398, // project ID
+                    "id": 2398, // project number
                     "name": "Aweil" // project name
                 },
                 "advanced": { // editing with JOSM
@@ -31,11 +30,18 @@ if (0) {
                 "lat": "50.12249",
                 "lon": "14.63599",
                 "zoom": null, // suggested zoom to show, null to choose automatically
-                "link": "https://openstreetmap.cz/way/8072073" // link to provide
+                "map": "https://openstreetmap.cz/way/8072073", // link to the map
+                "link": "https://www.paralelnipolis.cz/" // link to the location's page
             }
         }
     };
 }
+var monthNames = [
+    "ledna", "února", "března",
+    "dubna", "května", "června", "července",
+    "srpna", "září", "října",
+    "listopadu", "prosince"
+];
 
 var doCheckTask = function ($) {
     $('.mm-is-offline').hide();
@@ -50,23 +56,42 @@ var doCheckTask = function ($) {
             $('.mm-is-online-checking').hide();
             $('.mm-is-online-done').show();
             if (data.currentMapathon) {
+                console.log(data.currentMapathon);
                 var loopBy = ['basic','advanced'];
                 for (var i = loopBy.length - 1; i >= 0; i--) {
                     if (data.currentMapathon.projects[loopBy[i]]) {
                         var project = data.currentMapathon.projects[loopBy[i]];
                         $('.mm-' + loopBy[i] + ' .mm-link').each(function (idx, xlink) {
                             var link = $(xlink);
-                            link.attr('href', link.data('href').replace('__ID__', project.id));
-                            link.text(link.text().replace('__ID__', project.id).replace('__NAME__', project.name));
+                            var dataHref = link.data('href');
+                            if (dataHref) {
+                                link.attr('href', dataHref.replace('__ID__', project.id));
+                                link.text(link.text().replace('__ID__', project.id).replace('__NAME__', project.name));
+                            }
                         });
                     } else {
                         $('.mm-' + loopBy[i]).hide();
                     }
                 }
+                $("#current-mapathon-name").text(data.currentMapathon.name);
+                $("#current-mapathon-location").prop("href",data.currentMapathon.location.link).text(data.currentMapathon.location.name);
+                $("#current-mapathon-map").prop("href",data.currentMapathon.location.map).text(data.currentMapathon.location.address);
+                var startDate = new Date(Date.parse(data.currentMapathon.start));
+                if (startDate) {
+                    var day = startDate.getDate();
+                    var monthIndex = startDate.getMonth();
+                    var year = startDate.getFullYear();
+                    var hours = startDate.getHours();
+                    var minutes = startDate.getMinutes();
+
+                    $('#current-mapathon-date').text(day + ". " + monthNames[monthIndex] + " " + year + " v " + hours + ":" + (minutes < 10 ? "0" : "") + minutes);
+                    $('.date-part').show();
+                }
             } else {
                 $('.mm-advanced').hide();
                 $('.mm-link').each(function (idx, xlink) {
                     var link = $(xlink);
+                    console.log(link);
                     link.attr('href', link.data('href').replace('__ID__', data.current));
                     link.text(link.text().replace('__ID__', data.current));
                 });
