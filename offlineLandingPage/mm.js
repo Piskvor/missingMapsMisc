@@ -88,7 +88,7 @@ var doCheckTask = function ($) {
                 } else {
                     var dateTS = Date.parse(data.currentMapathon.start);
                     if (dateTS) {
-                        startDate = new Date().setTime(dateTS);
+                        startDate = new Date(dateTS);
                     }
                 }
 
@@ -106,7 +106,6 @@ var doCheckTask = function ($) {
                 $('.mm-advanced').hide();
                 $('.mm-link').each(function (idx, xlink) {
                     var link = $(xlink);
-                    console.log(link);
                     link.attr('href', link.data('href').replace('__ID__', data.current));
                     link.text(link.text().replace('__ID__', data.current));
                 });
