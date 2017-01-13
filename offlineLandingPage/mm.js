@@ -61,7 +61,7 @@ if (window.location.hostname.indexOf('local') === -1 || window.location.port != 
     allowLocalJsonCheck = false; // we're not in local server
 }
 
-var showState = function($checkContainer, checkName, state) {
+var showState = function ($checkContainer, checkName, state) {
     var result = 0;
     var $check = $checkContainer.find(checkName);
     if ($check.length) {
@@ -78,7 +78,7 @@ var showState = function($checkContainer, checkName, state) {
     return result;
 };
 
-var doLocalJsonCheck = function ($) {
+var doLocalJsonCheck = function ($, noRepeat) {
     if (allowLocalJsonCheck && !allChecksPassed) {
         $.ajax({
             url: 'local.json',
@@ -87,19 +87,18 @@ var doLocalJsonCheck = function ($) {
             cache: false,
             timeout: 3000,
             success: function (localJosm) {
-                //console.log(localJosm)
                 var checksPassed = 0;
                 if (localJosm.is_installed) {
                     $('.mm-basic').addClass('less-interesting');
                     var $checkContainer = $('.josm-check');
                     $checkContainer.show();
-                    checksPassed += showState($checkContainer, '.has-buildings-tools',localJosm.buildings_tools);
+                    checksPassed += showState($checkContainer, '.has-buildings-tools', localJosm.buildings_tools);
                     //showState($checkContainer, '.has-all-plugins',localJosm.has_all_plugins);
-                    checksPassed += showState($checkContainer, '.has-remote-control',localJosm.remote_control);
-                    checksPassed += showState($checkContainer, '.is-logged-in',localJosm.logged_in);
-                    checksPassed += showState($checkContainer, '.is-running',localJosm.is_running);
+                    checksPassed += showState($checkContainer, '.has-remote-control', localJosm.remote_control);
+                    checksPassed += showState($checkContainer, '.is-logged-in', localJosm.logged_in);
+                    checksPassed += showState($checkContainer, '.is-running', localJosm.is_running);
 
-                    if(checksPassed < checkCount) {
+                    if (checksPassed < checkCount && !noRepeat) {
                         window.setTimeout(function () {
                             doLocalJsonCheck($);
                         }, 3000);
@@ -119,6 +118,7 @@ var doLocalJsonCheck = function ($) {
 };
 
 var doCheckTask = function ($) {
+    doLocalJsonCheck($, true);
     $('.mm-is-offline').hide();
     $('.mm-is-online-checking').show();
     $.ajax({
@@ -132,7 +132,7 @@ var doCheckTask = function ($) {
             $('.mm-is-online-done').show();
             $('body').addClass('mm-is-page-online');
             if (data.currentMapathon) {
-                var loopBy = ['basic','advanced'];
+                var loopBy = ['basic', 'advanced'];
                 for (var i = loopBy.length - 1; i >= 0; i--) {
                     if (data.currentMapathon.projects[loopBy[i]]) {
                         var project = data.currentMapathon.projects[loopBy[i]];
@@ -149,8 +149,8 @@ var doCheckTask = function ($) {
                     }
                 }
                 $("#current-mapathon-name").text(data.currentMapathon.name);
-                $("#current-mapathon-location").prop("href",data.currentMapathon.location.link).text(data.currentMapathon.location.name);
-                $("#current-mapathon-map").prop("href",data.currentMapathon.location.map).text(data.currentMapathon.location.address);
+                $("#current-mapathon-location").prop("href", data.currentMapathon.location.link).text(data.currentMapathon.location.name);
+                $("#current-mapathon-map").prop("href", data.currentMapathon.location.map).text(data.currentMapathon.location.address);
                 var startDate = null;
                 var dates = data.currentMapathon.start.match(/((19|20)\d\d)([- /.])(0[1-9]|1[012])\3(0[1-9]|[12][0-9]|3[01]) ([012]?[0-9]):([0-5]?[0-9])/);
                 if (dates) {
@@ -196,7 +196,7 @@ Offline.on('up', function () {
     doCheckTask(Zepto);
 });
 Offline.on('down', function () {
-    Zepto('.hide').hide();
+    Zepto('.mm-basic,.mm-advanced,.mm-is-online-checking').hide();
     Zepto('.show').show();
     $('body').removeClass('mm-is-page-online');
 });
