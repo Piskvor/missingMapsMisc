@@ -48,6 +48,10 @@ if mkdir $TMPDIR 2>/dev/null; then
     ${DIR_NAME}/spot ${JOSM} $* &
     echo -n "$!" > "${TMPFILE}"
     wait
+    if [ -x "${DIR_NAME}/get-josm-user.sh" ]; then
+        # update JOSM status
+        ${DIR_NAME}/get-josm-user.sh
+    fi
 else
 	echo "Already running"
 	xdotool search "Java Openstreetmap Editor" windowactivate %1
