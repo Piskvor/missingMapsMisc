@@ -1,0 +1,17 @@
+#!/bin/bash
+
+for i in 10 20 30; do
+	sleep 10
+	ROUTES=`ip route | grep default | grep -v ' 127.' -c`
+	if [ "$ROUTES" -gt 0 ]; then 
+		NS=`grep -E '^nameserver' -c /etc/resolv.conf` 
+		if [ "$NS" -gt 0 ]; then
+			exit 
+		fi
+	fi
+done
+
+# not found
+/usr/local/bin/defaultconnect
+exit $?
+

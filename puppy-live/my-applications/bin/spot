@@ -1,0 +1,3 @@
+#!/bin/bash
+
+su -c "env DISPLAY=:0 $*" - spot
