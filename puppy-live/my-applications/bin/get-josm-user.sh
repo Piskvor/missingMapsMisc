@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [ "$1" != "" ] ; then
+    FORCE_SET_RUNNING=$1
+else
+    FORCE_SET_RUNNING=0
+fi
+
 OUT_FILE="$HOME/Web-Server/local.json"
 JOSM_PATH="$HOME/.config/JOSM"
 JOSM_FILE="$JOSM_PATH/preferences.xml"
@@ -15,11 +21,19 @@ if [ "$HAS_BUILDINGS_TOOLS" ]; then
 fi
 HAS_REMOTE_CONTROL=$(grep 'remotecontrol.enabled' "$JOSM_FILE" | grep -c 'true')
 HAS_OAUTH=$(grep -c 'oauth.access-token.key' "$JOSM_FILE")
-IS_RUNNING=0
-PID=$(find /tmp/josm* -name 'josm*-runner.pid' -exec cat {} \; 2>/dev/null)
-if [ "$PID" != "" ]; then
-    IS_RUNNING=$(ps -p "$PID" -o pid= | wc -l)
+if [ "$FORCE_SET_RUNNING" = 1 ]; then
+    IS_RUNNING=1
+else
+    if [ "$FORCE_SET_RUNNING" = -1 ] ; then
+        IS_RUNNING=0
+    else
+        PID=$(find /tmp/josm* -name 'josm*-runner.pid' -exec cat {} \; 2>/dev/null)
+        if [ "$PID" != "" ]; then
+            IS_RUNNING=$(ps -p "$PID" -o pid= | wc -l)
+        fi
+    fi
 fi
+
 
 cat > "$OUT_FILE" <<JSONFILE
 {

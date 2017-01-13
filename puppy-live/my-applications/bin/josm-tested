@@ -17,6 +17,7 @@ if mkdir $TMPDIR 2>/dev/null; then
     SPOT=${DIR_NAME}/spot
     JAR_NAME="${BASE_NAME}.jar"
     LOCAL_NAME="${DIR_NAME}/${JAR_NAME}"
+    ${SPOT} ${DIR_NAME}/get-josm-user.sh 1 &
 
 	if [ -f "$LOCAL_NAME" ]; then
 		VERSION_LOCAL=$(java -jar "$LOCAL_NAME" --version  2> /dev/null | grep 'JOSM' | sed 's/.*(//g;s/ [a-z]\+).*//g') 2> /dev/null
@@ -51,10 +52,11 @@ if mkdir $TMPDIR 2>/dev/null; then
     if [ "$JOSM_PID" != "" ]; then
         echo -n "$JOSM_PID" > "${TMPFILE}"
         $(
+            sleep 1
             for i in $(seq 1 20) ; do
                 if [ -x "${DIR_NAME}/get-josm-user.sh" ]; then
                     # update JOSM status after boot
-                    ${SPOT} ${DIR_NAME}/get-josm-user.sh
+                    ${SPOT} ${DIR_NAME}/get-josm-user.sh 1
                 fi
                 sleep 5
             done
@@ -64,7 +66,7 @@ if mkdir $TMPDIR 2>/dev/null; then
 
     if [ -x "${DIR_NAME}/get-josm-user.sh" ]; then
         # update JOSM status
-        ${SPOT} ${DIR_NAME}/get-josm-user.sh
+        ${SPOT} ${DIR_NAME}/get-josm-user.sh -1
     fi
 else
 	echo "Already running"
