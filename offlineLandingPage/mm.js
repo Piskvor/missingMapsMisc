@@ -102,11 +102,10 @@ var doLocalJsonCheck = function ($) {
                     if(checksPassed < checkCount) {
                         window.setTimeout(function () {
                             doLocalJsonCheck($);
-                        }, 5000);
+                        }, 3000);
                     } else {
                         allChecksPassed = true;
                     }
-
                 } else {
                     allowLocalJsonCheck = false;
                 }
@@ -122,7 +121,6 @@ var doLocalJsonCheck = function ($) {
 var doCheckTask = function ($) {
     $('.mm-is-offline').hide();
     $('.mm-is-online-checking').show();
-    doLocalJsonCheck($);
     $.ajax({
         url: 'https://piskvor.github.io/missingMapsMisc/mm.json',
         method: 'GET',
@@ -205,6 +203,7 @@ Offline.on('down', function () {
 
 Zepto(function ($) {
     $('.hide').hide();
+    doLocalJsonCheck($);
     Offline.check();
     doCheckTask($);
 });
