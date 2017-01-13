@@ -5,7 +5,6 @@ TMPFILE="${TMPDIR}/${BASE_NAME}-runner.pid"
 
 # clean up the directory
 function cleanup {
-    rm "${TMPFILE}"
 	rmdir "${TMPDIR}"
 }
 
@@ -48,6 +47,7 @@ if mkdir $TMPDIR 2>/dev/null; then
     # found a version
     echo ${JOSM} $*
     ${SPOT} ${JOSM} $* &
+
     JOSM_PID=$!
     if [ "$JOSM_PID" != "" ]; then
         echo -n "$JOSM_PID" > "${TMPFILE}"
@@ -64,6 +64,7 @@ if mkdir $TMPDIR 2>/dev/null; then
         wait ${JOSM_PID}
     fi
 
+    rm "${TMPFILE}"
     if [ -x "${DIR_NAME}/get-josm-user.sh" ]; then
         # update JOSM status
         ${SPOT} ${DIR_NAME}/get-josm-user.sh -1
@@ -71,6 +72,5 @@ if mkdir $TMPDIR 2>/dev/null; then
 else
 	echo "Already running"
 	xdotool search "Java Openstreetmap Editor" windowactivate %1
-		#windowmove %1 0 0 windowsize %1 100% 90%
 	exit 6
 fi
