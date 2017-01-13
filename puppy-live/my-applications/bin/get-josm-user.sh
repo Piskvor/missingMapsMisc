@@ -4,6 +4,11 @@ OUT_FILE="$HOME/Web-Server/local.json"
 JOSM_PATH="$HOME/.config/JOSM"
 JOSM_FILE="$JOSM_PATH/preferences.xml"
 
+if [ -f "$JOSM_FILE" ] ; then
+    echo "no $JOSM_FILE"
+    exit 1
+fi
+
 HAS_PLUGINS=$(grep -c 'buildings_tools' "$JOSM_FILE")
 HAS_REMOTE_CONTROL=$(grep 'remotecontrol.enabled' "$JOSM_FILE" | grep -c 'true')
 HAS_OAUTH=$(grep -c 'oauth.access-token.key' "$JOSM_FILE")
