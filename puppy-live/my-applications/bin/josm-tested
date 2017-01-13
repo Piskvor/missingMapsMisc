@@ -14,6 +14,7 @@ if mkdir $TMPDIR 2>/dev/null; then
 	trap "cleanup" EXIT
 
     DIR_NAME=/root/my-applications/bin
+    SPOT=${DIR_NAME}/spot
     JAR_NAME="${BASE_NAME}.jar"
     LOCAL_NAME="${DIR_NAME}/${JAR_NAME}"
 
@@ -45,12 +46,25 @@ if mkdir $TMPDIR 2>/dev/null; then
 
     # found a version
     echo ${JOSM} $*
-    ${DIR_NAME}/spot ${JOSM} $* &
-    echo -n "$!" > "${TMPFILE}"
-    wait
+    ${SPOT} ${JOSM} $* &
+    JOSM_PID=$!
+    if [ "$JOSM_PID" != "" ]; then
+        echo -n "$JOSM_PID" > "${TMPFILE}"
+        $(
+            for i in $(seq 1 20) ; do
+                if [ -x "${DIR_NAME}/get-josm-user.sh" ]; then
+                    # update JOSM status after boot
+                    ${SPOT} ${DIR_NAME}/get-josm-user.sh
+                fi
+                sleep 5
+            done
+        ) &
+        wait ${JOSM_PID}
+    fi
+
     if [ -x "${DIR_NAME}/get-josm-user.sh" ]; then
         # update JOSM status
-        ${DIR_NAME}/get-josm-user.sh
+        ${SPOT} ${DIR_NAME}/get-josm-user.sh
     fi
 else
 	echo "Already running"

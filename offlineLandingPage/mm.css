@@ -27,8 +27,47 @@ a {
 
 .tech-help {
 	margin-top: 1em;
+	width: 30%;
+	max-width: 50%;
 }
 
 .current-mapathon {
 	margin-bottom: 1em;
+}
+
+.correct, .error, .checking {
+	font-weight: bold;
+}
+.correct {
+
+}
+.error {
+
+}
+
+.checking:before, .correct:before, .error:before {
+    font-family: 'Web Symbols';
+    padding: 0.2em;
+}
+.checking:before {
+    content: "*";
+    color: darkgray;
+}
+.correct:before {
+    content: "/";
+    color: darkgreen;
+}
+.error:before {
+    content: "'";
+    color: darkred;
+}
+
+@font-face {
+	font-family: 'Web Symbols';
+	src: url('font/WebSymbols-Regular.eot');
+	src: url('font/WebSymbols-Regular.eot?#iefix') format('embedded-opentype'),
+        url('font/WebSymbols-Regular.woff') format('woff'),
+        url('font/WebSymbols-Regular.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
 }

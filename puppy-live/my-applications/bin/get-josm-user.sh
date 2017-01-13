@@ -8,15 +8,26 @@ if [ ! -f "$JOSM_FILE" ] ; then
     echo "no $JOSM_FILE"
     exit 1
 fi
-
-HAS_PLUGINS=$(grep -c 'buildings_tools' "$JOSM_FILE")
+HAS_ALL_PLUGINS=0
+HAS_BUILDINGS_TOOLS=$(grep -c 'buildings_tools' "$JOSM_FILE")
+if [ "$HAS_BUILDINGS_TOOLS" ]; then
+    HAS_ALL_PLUGINS=1
+fi
 HAS_REMOTE_CONTROL=$(grep 'remotecontrol.enabled' "$JOSM_FILE" | grep -c 'true')
 HAS_OAUTH=$(grep -c 'oauth.access-token.key' "$JOSM_FILE")
+IS_RUNNING=0
+PID=$(find /tmp/josm* -name 'josm*-runner.pid' -exec cat {} \; 2>/dev/null)
+if [ "$PID" != "" ]; then
+    IS_RUNNING=$(ps -p "$PID" -o pid= | wc -l)
+fi
 
 cat > "$OUT_FILE" <<JSONFILE
 {
- "has_plugins": ${HAS_PLUGINS},
+ "is_installed": 1,
+ "buildings_tools": ${HAS_BUILDINGS_TOOLS},
+ "has_all_plugins": ${HAS_ALL_PLUGINS},
  "remote_control": ${HAS_REMOTE_CONTROL},
- "logged_in": ${HAS_OAUTH}
+ "logged_in": ${HAS_OAUTH},
+ "is_running": ${IS_RUNNING}
 }
 JSONFILE
