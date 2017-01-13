@@ -4,7 +4,7 @@ OUT_FILE="$HOME/Web-Server/local.json"
 JOSM_PATH="$HOME/.config/JOSM"
 JOSM_FILE="$JOSM_PATH/preferences.xml"
 
-if [ -f "$JOSM_FILE" ] ; then
+if [ ! -f "$JOSM_FILE" ] ; then
     echo "no $JOSM_FILE"
     exit 1
 fi
