@@ -50,5 +50,7 @@ if mkdir $TMPDIR 2>/dev/null; then
     wait
 else
 	echo "Already running"
+	xdotool search "Java Openstreetmap Editor" windowactivate %1
+		#windowmove %1 0 0 windowsize %1 100% 90%
 	exit 6
 fi
