@@ -111,7 +111,7 @@ var doLocalJsonCheck = function ($, noRepeat) {
             },
             error: function () {
                 // no local.JSON, omit local checks
-                allowLocalJsonCheck = false;
+                //allowLocalJsonCheck = false;
             }
         });
     }
