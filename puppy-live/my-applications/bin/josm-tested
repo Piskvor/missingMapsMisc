@@ -1,20 +1,21 @@
 #!/bin/bash
-MYPID=$$
-BASE_NAME=`basename $0`
-TMPDIR=/tmp/$BASE_NAME
-TMPFILE=$TMPDIR/josm-runner.pid
+BASE_NAME=$(basename $0)
+TMPDIR="/tmp/${BASE_NAME}-${USER}"
+TMPFILE="${TMPDIR}/${BASE_NAME}-runner.pid"
+
+# clean up the directory
 function cleanup {
-	rm -rf $TMPDIR
+    rm "${TMPFILE}"
+	rmdir "${TMPDIR}"
 }
-if mkdir $TMPDIR; then
+
+# lock using a directory: http://unix.stackexchange.com/a/180028/5477
+if mkdir $TMPDIR 2>/dev/null; then
 	trap "cleanup" EXIT
 
-#echo "NOT LOCKED: $MYPID";
-
-DIR_NAME=/root/my-applications/bin
-JAR_NAME="${BASE_NAME}.jar"
-LOCAL_NAME="${DIR_NAME}/${JAR_NAME}"
-
+    DIR_NAME=/root/my-applications/bin
+    JAR_NAME="${BASE_NAME}.jar"
+    LOCAL_NAME="${DIR_NAME}/${JAR_NAME}"
 
 	if [ -f "$LOCAL_NAME" ]; then
 		VERSION_LOCAL=$(java -jar "$LOCAL_NAME" --version  2> /dev/null | grep 'JOSM' | sed 's/.*(//g;s/ [a-z]\+).*//g') 2> /dev/null
@@ -32,19 +33,21 @@ LOCAL_NAME="${DIR_NAME}/${JAR_NAME}"
 	else
 		JOSM=/usr/bin/${BASE_NAME}
 	fi
-if [ "$VERSION_LOCAL" -eq 0 -a "$VERSION_REPO" -eq 0 ]; then
-	echo "No version found!"
-	exit 35
-fi
-IS_RUNNING=$(ps -A f | grep ${JAR_NAME} | grep java -c)
-if [ $IS_RUNNING -gt 0 ]; then
-	echo "Already running, quit"
-	exit 4
-fi
+    if [ "$VERSION_LOCAL" -eq 0 -a "$VERSION_REPO" -eq 0 ]; then
+        echo "No version found!"
+        exit 35
+    fi
+    IS_RUNNING=$(ps -A f | grep ${JAR_NAME} | grep java -c)
+    if [ "$IS_RUNNING" -gt 0 ]; then
+        echo "Already running, quit"
+        exit 4
+    fi
 
-echo ${JOSM} $*
-$DIR_NAME/spot ${JOSM} $*
-
+    # found a version
+    echo ${JOSM} $*
+    ${DIR_NAME}/spot ${JOSM} $* &
+    echo -n "$!" > "${TMPFILE}"
+    wait
 else
 	echo "Already running"
 	exit 6
