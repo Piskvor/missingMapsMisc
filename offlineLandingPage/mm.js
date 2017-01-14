@@ -79,7 +79,7 @@ var showState = function ($checkContainer, checkName, state) {
     return result;
 };
 
-var doLocalJsonCheck = function ($) {
+var doLocalJsonCheck = function ($, noRepeat) {
     if (allowLocalJsonCheck && !allChecksPassed) {
         $.ajax({
             url: 'local.json',
@@ -103,11 +103,7 @@ var doLocalJsonCheck = function ($) {
                     checksPassed += showState($checkContainer, '.is-logged-in', localJosm.logged_in);
                     checksPassed += showState($checkContainer, '.is-running', localJosm.is_running);
 
-                    if (checksPassed < checkCount) {
-                        window.setTimeout(function () {
-                            doLocalJsonCheck($);
-                        }, 1000);
-                    } else {
+                    if (checksPassed >= checkCount || noRepeat) {
                         allChecksPassed = true;
                     }
                 } else {
@@ -120,6 +116,9 @@ var doLocalJsonCheck = function ($) {
             }
         });
     }
+    window.setInterval(function () {
+        doLocalJsonCheck($);
+    }, 2000);
 };
 
 var doJosmCheck = function ($, $checkContainer) {
@@ -146,7 +145,7 @@ var doJosmCheck = function ($, $checkContainer) {
 };
 
 var doCheckTask = function ($) {
-    doLocalJsonCheck($);
+    doLocalJsonCheck($, true);
     $('.mm-is-offline').hide();
     $('.mm-is-online-checking').show();
     $.ajax({
@@ -213,7 +212,7 @@ var doCheckTask = function ($) {
                     link.text(link.text().replace('__ID__', data.current));
                 });
             }
-            doLocalJsonCheck($);
+            doLocalJsonCheck($, true);
         },
         error: function () {
             Offline.check();
