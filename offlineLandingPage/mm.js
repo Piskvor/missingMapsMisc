@@ -86,7 +86,7 @@ var doLocalJsonCheck = function ($, noRepeat) {
             method: 'GET',
             dataType: 'json',
             cache: false,
-            timeout: 3000,
+            timeout: 1000,
             success: function (localJosm) {
                 var checksPassed = 0;
                 if (localJosm.is_installed) {
@@ -118,7 +118,7 @@ var doLocalJsonCheck = function ($, noRepeat) {
     }
     window.setInterval(function () {
         doLocalJsonCheck($);
-    }, 2000);
+    }, 3000);
 };
 
 var doJosmCheck = function ($, $checkContainer) {
