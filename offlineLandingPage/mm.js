@@ -205,7 +205,7 @@ var doCheckTask = function ($) {
                     link.text(link.text().replace('__ID__', data.current));
                 });
             }
-            doLocalJsonCheck($);
+            doLocalJsonCheck($, true);
         },
         error: function () {
             Offline.check();
