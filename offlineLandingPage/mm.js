@@ -57,6 +57,9 @@ var allowLocalJsonCheck = true;
 var allowJosmRemoteCheck = true;
 var allChecksPassed = false;
 var checkCount = 4;
+var rcWorkCountdown = 10;
+var checksPassed;
+var $checkContainer;
 
 if (window.location.hostname.indexOf('local') === -1 || window.location.port != 8080) { // localhost or missingmaps.local.
     allowLocalJsonCheck = false; // we're not in local server
@@ -81,7 +84,6 @@ var showState = function ($checkContainer, checkName, state) {
 
 var doLocalJsonCheck = function ($, noRepeat) {
     if (allowLocalJsonCheck && !allChecksPassed) {
-        var $checkContainer = $('.josm-check');
         $.ajax({
             url: 'local.json',
             method: 'GET',
@@ -89,7 +91,7 @@ var doLocalJsonCheck = function ($, noRepeat) {
             cache: false,
             timeout: 500,
             success: function (localJosm) {
-                var checksPassed = 0;
+                checksPassed = 0;
                 if (localJosm.is_installed) {
                     $('.mm-basic').addClass('less-interesting');
                     $checkContainer.show();
@@ -98,8 +100,7 @@ var doLocalJsonCheck = function ($, noRepeat) {
 
                     checksPassed += showState($checkContainer, '.is-logged-in', localJosm.logged_in);
                     checksPassed += showState($checkContainer, '.is-running', localJosm.is_running);
-
-                    if (checksPassed >= checkCount || noRepeat) {
+                    if (checksPassed >= checkCount) {
                         allChecksPassed = true;
                     }
                 } else {
@@ -112,32 +113,37 @@ var doLocalJsonCheck = function ($, noRepeat) {
             }
         });
     }
-    window.setTimeout(function () {
-        doLocalJsonCheck($);
-        doJosmCheck($, $checkContainer);
-    }, 2000);
 };
 
 var doJosmCheck = function ($, $checkContainer) {
     if (allowJosmRemoteCheck) {
+//        showState($checkContainer, '.is-remote-control', null);
+//        window.setTimeout(function () {
         $.ajax({
             url: 'http://localhost:8111/features',
             method: 'GET',
             dataType: 'json',
-            cache: false,
-            timeout: 3000,
+            cache: true,
+            timeout: 500,
             success: function (features) {
                 if (features.length > 0) {
+                    allChecksPassed = true;
                     showState($checkContainer, '.is-remote-control', 1);
+                    rcWorkCountdown--;
                 } else {
                     showState($checkContainer, '.is-remote-control', 0);
                 }
             },
             error: function () {
                 showState($checkContainer, '.is-remote-control', 0);
-                allowJosmRemoteCheck = false;
+                //allowJosmRemoteCheck = false;
             }
         });
+//        }, 500)
+
+        if (rcWorkCountdown <= 0) {
+            allowJosmRemoteCheck = false;
+        }
     }
 };
 
@@ -227,8 +233,15 @@ Offline.on('down', function () {
 });
 
 Zepto(function ($) {
+    $checkContainer = $('.josm-check');
     $('.hide').hide();
     doLocalJsonCheck($);
+    doJosmCheck($, $checkContainer);
     Offline.check();
     doCheckTask($);
+    window.setInterval(function () {
+        doJosmCheck($, $checkContainer);
+        doLocalJsonCheck($);
+    }, 3000);
+
 });
