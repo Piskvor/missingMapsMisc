@@ -93,7 +93,6 @@ var doLocalJsonCheck = function ($, noRepeat) {
                     var $checkContainer = $('.josm-check');
                     $checkContainer.show();
                     checksPassed += showState($checkContainer, '.has-buildings-tools', localJosm.buildings_tools);
-                    //showState($checkContainer, '.has-all-plugins',localJosm.has_all_plugins);
                     checksPassed += showState($checkContainer, '.has-remote-control', localJosm.remote_control);
                     checksPassed += showState($checkContainer, '.is-logged-in', localJosm.logged_in);
                     checksPassed += showState($checkContainer, '.is-running', localJosm.is_running);
@@ -104,6 +103,7 @@ var doLocalJsonCheck = function ($, noRepeat) {
                         }, 2000);
                     } else {
                         allChecksPassed = true;
+                        doJosmCheck($, $checkContainer);
                     }
                 } else {
                     allowLocalJsonCheck = false;
@@ -115,6 +115,26 @@ var doLocalJsonCheck = function ($, noRepeat) {
             }
         });
     }
+};
+
+var doJosmCheck = function($, $checkContainer) {
+    $.ajax({
+        url: 'http://localhost:8111/features',
+        method: 'GET',
+        dataType: 'json',
+        cache: false,
+        timeout: 3000,
+        success: function (features) {
+            if (features.length > 0) {
+                showState($checkContainer, '.is-remote-control', 1);
+            } else {
+                showState($checkContainer, '.is-remote-control', 0);
+            }
+        },
+        error: function () {
+            showState($checkContainer, '.is-remote-control', 0);
+        }
+    });
 };
 
 var doCheckTask = function ($) {
