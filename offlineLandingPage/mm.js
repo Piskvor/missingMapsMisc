@@ -81,24 +81,20 @@ var showState = function ($checkContainer, checkName, state) {
 
 var doLocalJsonCheck = function ($, noRepeat) {
     if (allowLocalJsonCheck && !allChecksPassed) {
+        var $checkContainer = $('.josm-check');
         $.ajax({
             url: 'local.json',
             method: 'GET',
             dataType: 'json',
             cache: false,
-            timeout: 1000,
+            timeout: 500,
             success: function (localJosm) {
                 var checksPassed = 0;
                 if (localJosm.is_installed) {
                     $('.mm-basic').addClass('less-interesting');
-                    var $checkContainer = $('.josm-check');
                     $checkContainer.show();
                     checksPassed += showState($checkContainer, '.has-buildings-tools', localJosm.buildings_tools);
-                    var isRemote = showState($checkContainer, '.has-remote-control', localJosm.remote_control);
-                    if (isRemote) {
-                        doJosmCheck($, $checkContainer);
-                    }
-                    checksPassed += isRemote;
+                    checksPassed += showState($checkContainer, '.has-remote-control', localJosm.remote_control);
 
                     checksPassed += showState($checkContainer, '.is-logged-in', localJosm.logged_in);
                     checksPassed += showState($checkContainer, '.is-running', localJosm.is_running);
@@ -116,9 +112,10 @@ var doLocalJsonCheck = function ($, noRepeat) {
             }
         });
     }
-    window.setInterval(function () {
+    window.setTimeout(function () {
         doLocalJsonCheck($);
-    }, 3000);
+        doJosmCheck($, $checkContainer);
+    }, 2000);
 };
 
 var doJosmCheck = function ($, $checkContainer) {
