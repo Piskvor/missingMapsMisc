@@ -63,6 +63,7 @@ var $checkContainer;
 
 if (window.location.hostname.indexOf('local') === -1 || window.location.port != 8080) { // localhost or missingmaps.local.
     allowLocalJsonCheck = false; // we're not in local server
+    allowJosmRemoteCheck = false;
 }
 
 var showState = function ($checkContainer, checkName, state) {
@@ -179,7 +180,7 @@ var doCheckTask = function ($) {
                     }
                 }
                 if (data.currentMapathon.projects.basic.id == data.currentMapathon.projects.advanced.id) {
-                    $('.smtw:first').hide();
+                    $('.smtw').first().hide();
                 }
                 $("#current-mapathon-name").text(data.currentMapathon.name);
                 $("#current-mapathon-location").prop("href", data.currentMapathon.location.link).text(data.currentMapathon.location.name);
