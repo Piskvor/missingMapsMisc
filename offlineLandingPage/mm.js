@@ -178,6 +178,9 @@ var doCheckTask = function ($) {
                         $('.mm-' + loopBy[i]).hide();
                     }
                 }
+                if (data.currentMapathon.projects.basic.id == data.currentMapathon.projects.advanced.id) {
+                    $('.smtw:first').hide();
+                }
                 $("#current-mapathon-name").text(data.currentMapathon.name);
                 $("#current-mapathon-location").prop("href", data.currentMapathon.location.link).text(data.currentMapathon.location.name);
                 $("#current-mapathon-map").prop("href", data.currentMapathon.location.map).text(data.currentMapathon.location.address);
