@@ -1,6 +1,6 @@
 # Úvodní obrazovka k mapathonu
 
-[Linky na aktuální mapathon a tak vůbec](offlineLandingPage/)
+[Aktuální mapathon a rozcestník](start/)
 
 # Základní instalace JOSM 
 
