@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>#missingMaps</title>
-    <script src="zepto.min.js" integrity="sha384-Fr6YIw8steUKRYhcumTlUAYiegQwe39jSM1a3XXugVfkH9Hnuv9+BhnJ7nLwKiGJ"
+    <script src="jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
             crossorigin="anonymous"></script>
-    <script src="offline.min.js" integrity="sha384-Bj9xDKrR2zWeE7OL/xjvsCyehopovk/tyYg1raM9W5ykQ6Bk7Gt9vwhCIZfQOIVy"
+    <script src="offline.min.js"
+            integrity="sha384-Bj9xDKrR2zWeE7OL/xjvsCyehopovk/tyYg1raM9W5ykQ6Bk7Gt9vwhCIZfQOIVy"
             crossorigin="anonymous"></script>
-
     <link rel="stylesheet" href="offline-theme-slide.css"/>
     <link rel="stylesheet" href="offline-language-czech.css"/>
     <link rel="stylesheet" href="mm.css"/>
@@ -26,8 +27,9 @@
 </head>
 <body>
 <h1><a href="https://www.facebook.com/groups/missingmapscz/">#missingMaps</a> <span id="current-mapathon-name">mapathon</span></h1>
-<div class="hide no-js-show">Javascript je <span class="error">vypnutý</span></div>
-<div class="mm-is-offline show no-js-hide">Čekám na připojení k internetu...<span class="checking"></span></div>
+<div id="no-js-show" class="hide no-js-show">Javascript je <span class="error">vypnutý</span></div>
+<div id="bad-js-show" class="hide bad-js-show">Javascript se <span class="error">nenačetl</span></div>
+<div id="no-js-hide" class="mm-is-offline show no-js-hide">Čekám na připojení k internetu...<span class="checking"></span></div>
 <div class="mm-is-online-checking hide">Načítám aktuální data...<span class="checking"></span></div>
 <div class="mm-is-online-done current-mapathon hide">
     Nejbližší mapathon je v <a id="current-mapathon-location" href="#" target="_blank"></a><span class="date-part hide">, <span id="current-mapathon-date"></span></span> (mapa: <a id="current-mapathon-map" href="#" target="_blank"></a>)
