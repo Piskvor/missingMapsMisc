@@ -1,11 +1,11 @@
 body {
-	background: url('mm-query.png');
-	background-size: 100%;
+    background: #dcf0eb url('mm-query.png');
+    background-size: 100%;
 }
 
 body.mm-is-page-online {
-	background: url('mm.png') !important;
-	background-size: 100% !important;
+    background: #dcf0eb url('mm.png') !important;
+    background-size: 100% !important;
 }
 
 h1 {
