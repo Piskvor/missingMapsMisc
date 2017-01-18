@@ -179,6 +179,7 @@ var doCheckTask = function ($) {
             $('body').addClass('mm-is-page-online');
             if (data.currentMapathon) {
                 var loopBy = ['basic', 'advanced'];
+                var checkAreas = [];
                 for (var i = loopBy.length - 1; i >= 0; i--) {
                     if (data.currentMapathon.projects[loopBy[i]]) {
                         var project = data.currentMapathon.projects[loopBy[i]];
@@ -186,7 +187,12 @@ var doCheckTask = function ($) {
                             var link = $(xlink);
                             var dataHref = link.data('href');
                             if (dataHref) {
-                                link.attr('href', dataHref.replace('__ID__', project.id));
+                                var projectHref = dataHref.replace('__ID__', project.id);
+                                if (link.hasClass('project-link') && checkAreas.indexOf(projectHref) < 0) {
+                                    checkAreas.push(projectHref);
+                                }
+                                link.data('project-id', project.id);
+                                link.attr('href', projectHref);
                                 link.text(link.text().replace('__ID__', project.id).replace('__NAME__', project.name));
                             }
                         });
@@ -194,9 +200,11 @@ var doCheckTask = function ($) {
                         $('.mm-' + loopBy[i]).hide();
                     }
                 }
-                if (data.currentMapathon.projects.basic.id == data.currentMapathon.projects.advanced.id) {
+                if (checkAreas.length < 2) {
+                    // only show one SMTW link
                     $('.smtw').first().hide();
                 }
+                //console.log(checkAreas);
                 $("#current-mapathon-name").text(data.currentMapathon.name);
                 $("#current-mapathon-location").prop("href", data.currentMapathon.location.link).text(data.currentMapathon.location.name);
                 $("#current-mapathon-map").prop("href", data.currentMapathon.location.map).text(data.currentMapathon.location.address);
