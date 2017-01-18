@@ -71,7 +71,27 @@ if (0) { // dummy structure for JS code hinting, never gets executed
         "remote_control": 1, // has remote control enabled?
         "logged_in": 1, // is logged in?
         "is_running": 1 // is JOSM running?
-    }
+    };
+
+    var project = {
+        "geometry": {
+            "type": "MultiPolygon",
+            "coordinates": [[[[28.99254667929771, -1.228972154544749], [29.002406862935736, -1.228972154544749], [29.04924273521637, -1.332478204824155], [29.162634847053695, -1.39655122077341], [29.162634847053695, -1.416265647207857], [29.078823286130454, -1.522227757714708], [29.06033544180915, -1.520995669372182], [29.06280048771866, -1.583831265287025], [29.022127230211794, -1.583831265287025], [29.024592276121297, -1.573974825293451], [28.99254667929771, -1.572742767012345], [28.99254667929771, -1.228972154544749]]]]
+        },
+        "type": "Feature",
+        "id": 2329,
+        "properties": {
+            "status": 1,
+            "changeset_comment": "#hotosm-project-2329, #MissingMaps, Masisi #CongoDRC Added #majorroads using DG +Vivid",
+            "name": "Missing Maps: Masisi territory, North Kivu, DRC (roads part 8)",
+            "license": null,
+            "created": "2016-11-16T13:58:55Z",
+            "description": "",
+            "priority": 2,
+            "done": 11.98,
+            "validated": 0.53
+        }
+    };
 }
 var monthNames = [
     "ledna", "února", "března",
@@ -163,6 +183,36 @@ var doJosmCheck = function ($, $checkContainer) {
     }
 };
 
+var processCoordinates = function (coords, coordMaxMin) {
+    if (typeof(coordMaxMin) === 'undefined') {
+        coordMaxMin = {
+            "left": +180,
+            "right": -180,
+            "bottom": +90,
+            "top": -90
+        };
+    }
+    if (coords.length === 2) {
+        if (coordMaxMin.left > coords[0]) {
+            coordMaxMin.left = coords[0];
+        }
+        if (coordMaxMin.right < coords[0]) {
+            coordMaxMin.right = coords[0];
+        }
+        if (coordMaxMin.bottom > coords[1]) {
+            coordMaxMin.bottom = coords[1];
+        }
+        if (coordMaxMin.top < coords[1]) {
+            coordMaxMin.top = coords[1];
+        }
+    } else {
+        for (var i = coords.length - 1; i >= 0; i--) {
+            coordMaxMin = processCoordinates(coords[i], coordMaxMin);
+        }
+    }
+    return coordMaxMin;
+};
+
 var doCheckTask = function ($) {
     doLocalJsonCheck($, true);
     $('.mm-is-offline').hide();
@@ -192,6 +242,10 @@ var doCheckTask = function ($) {
                                 if (link.hasClass('project-link') && checkAreas.indexOf(projectHref) < 0) {
                                     checkAreas.push(projectHref);
                                     areaData[project.id] = project;
+                                    areaData[project.id].href = projectHref;
+                                    link.addClass('project-link-' + project.id);
+                                } else if (link.hasClass('smtw-link')) {
+                                    link.addClass('smtw-link-' + project.id);
                                 }
                                 link.data('project-id', project.id);
                                 link.attr('href', projectHref);
@@ -205,12 +259,49 @@ var doCheckTask = function ($) {
                 var $smtw = $('.smtw');
                 $smtw.each(function (idx, elem) {
                     var $elem = $(elem);
-                    if (checkAreas.length < 2 && idx == 0) {
+                    if (checkAreas.length < 2 && idx === 0) {
                         // only show one SMTW link
                         $elem.hide();
                     } else {
                         var $smtwLink = $elem.find('.smtw-link');
-                        //console.log(areaData[$smtwLink.data('project-id')]);
+                        var projectId = $smtwLink.data('project-id');
+                        if (projectId && areaData[projectId]) {
+                            if (typeof(areaData[projectId].bounds) === 'undefined') {
+                                var jsonHref = areaData[projectId].href + '.json';
+                                var $links = $('.smtw-link-' + project.id);
+                                $('.smtw-checking').removeClass('hide').show();
+                                $.ajax({
+                                    url: jsonHref,
+                                    method: 'GET',
+                                    dataType: 'json',
+                                    cache: true,
+                                    timeout: 30000,
+                                    success: function (project) {
+                                        var done = null;
+                                        if (typeof(project.properties.done) !== 'undefined') {
+                                            done = project.properties.done;
+                                        }
+                                        areaData[projectId].done = done;
+                                        areaData[projectId].coords = null;
+                                        if (typeof(project.geometry) !== 'undefined' || typeof(project.geometry.coordinates) !== 'undefined') {
+                                            areaData[projectId].coords = processCoordinates(project.geometry.coordinates);
+                                            var coordString =  '&bounds=' + areaData[projectId].coords.left + ',' +areaData[projectId].coords.bottom + ',' + areaData[projectId].coords.right + ',' + areaData[projectId].coords.top;
+
+                                            $links.prop('href', $links.prop('href') + coordString);
+                                        }
+
+
+
+                                        if (areaData[projectId].done > 0) {
+                                            $('.project-link-' + projectId).closest('.mm-is-online-done').find('.smtw-status').show().text('(' + areaData[projectId].done + '% hotovo)');
+                                        }
+                                    },
+                                    error: function () {
+                                        $('.smtw-checking').hide();
+                                    }
+                                });
+                            }
+                        }
                     }
                 });
                 $("#current-mapathon-name").text(data.currentMapathon.name);
