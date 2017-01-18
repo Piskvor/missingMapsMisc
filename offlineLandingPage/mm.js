@@ -7,10 +7,10 @@ if (typeof(window.Offline) === 'undefined' || typeof(window.$) === 'undefined') 
         var noJsHide = document.getElementById('no-js-hide');
         noJsHide.className = 'hide';
         var hide = document.getElementsByClassName('hide');
-        for (var i = 0; i < hide.length; i ++) {
+        for (var i = 0; i < hide.length; i++) {
             hide[i].style.display = 'none';
         }
-    },100);
+    }, 100);
 } else { // we're all good: jQuery and Offline are loaded
     isLoadedCorrectly = true;
     Offline.options = {
@@ -180,6 +180,7 @@ var doCheckTask = function ($) {
             if (data.currentMapathon) {
                 var loopBy = ['basic', 'advanced'];
                 var checkAreas = [];
+                var areaData = {};
                 for (var i = loopBy.length - 1; i >= 0; i--) {
                     if (data.currentMapathon.projects[loopBy[i]]) {
                         var project = data.currentMapathon.projects[loopBy[i]];
@@ -190,6 +191,7 @@ var doCheckTask = function ($) {
                                 var projectHref = dataHref.replace('__ID__', project.id);
                                 if (link.hasClass('project-link') && checkAreas.indexOf(projectHref) < 0) {
                                     checkAreas.push(projectHref);
+                                    areaData[project.id] = project;
                                 }
                                 link.data('project-id', project.id);
                                 link.attr('href', projectHref);
@@ -200,11 +202,17 @@ var doCheckTask = function ($) {
                         $('.mm-' + loopBy[i]).hide();
                     }
                 }
-                if (checkAreas.length < 2) {
-                    // only show one SMTW link
-                    $('.smtw').first().hide();
-                }
-                //console.log(checkAreas);
+                var $smtw = $('.smtw');
+                $smtw.each(function (idx, elem) {
+                    var $elem = $(elem);
+                    if (checkAreas.length < 2 && idx == 0) {
+                        // only show one SMTW link
+                        $elem.hide();
+                    } else {
+                        var $smtwLink = $elem.find('.smtw-link');
+                        //console.log(areaData[$smtwLink.data('project-id')]);
+                    }
+                });
                 $("#current-mapathon-name").text(data.currentMapathon.name);
                 $("#current-mapathon-location").prop("href", data.currentMapathon.location.link).text(data.currentMapathon.location.name);
                 $("#current-mapathon-map").prop("href", data.currentMapathon.location.map).text(data.currentMapathon.location.address);
