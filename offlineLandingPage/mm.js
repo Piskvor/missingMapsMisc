@@ -1,13 +1,40 @@
-var rnd = Math.random();
-Offline.options = {
-    checks: {
-        image: {
-            url: 'https://piskvor.github.io/missingMapsMisc/offlineLandingPage/josm.png?_' + rnd
-        },
-        active: 'image'
-    }
-};
+var isLoadedCorrectly = false;
+if (typeof(window.Offline) === 'undefined' || typeof(window.$) === 'undefined') {
+    // check if all loaded - else ugly-hack the DOM to show error
+    window.setTimeout(function () {
+        var badJs = document.getElementById('bad-js-show');
+        badJs.className = '';
+        var noJsHide = document.getElementById('no-js-hide');
+        noJsHide.className = 'hide';
+        var hide = document.getElementsByClassName('hide');
+        for (var i = 0; i < hide.length; i ++) {
+            hide[i].style.display = 'none';
+        }
+    },100);
+} else { // we're all good: jQuery and Offline are loaded
+    isLoadedCorrectly = true;
+    Offline.options = {
+        checks: {
+            image: {
+                url: 'https://piskvor.github.io/missingMapsMisc/offlineLandingPage/josm.png?_' + Math.random()
+            },
+            active: 'image'
+        }
+    };
+}
 
+var allowLocalJsonCheck = true;
+var allowJosmRemoteCheck = true;
+var allChecksPassed = false;
+var checkCount = 4;
+var rcWorkCountdown = 10;
+var checksPassed;
+var $checkContainer;
+
+if (window.location.hostname.indexOf('local') === -1 || window.location.port != 8080) { // localhost or missingmaps.local.
+    allowLocalJsonCheck = false; // we're not in local server
+    allowJosmRemoteCheck = false;
+}
 if (0) { // dummy structure for JS code hinting, never gets executed
     var data = {
         "current": 2398, // task to do if there's no mapathon currently running
@@ -53,18 +80,6 @@ var monthNames = [
     "listopadu", "prosince"
 ];
 
-var allowLocalJsonCheck = true;
-var allowJosmRemoteCheck = true;
-var allChecksPassed = false;
-var checkCount = 4;
-var rcWorkCountdown = 10;
-var checksPassed;
-var $checkContainer;
-
-if (window.location.hostname.indexOf('local') === -1 || window.location.port != 8080) { // localhost or missingmaps.local.
-    allowLocalJsonCheck = false; // we're not in local server
-    allowJosmRemoteCheck = false;
-}
 
 var showState = function ($checkContainer, checkName, state) {
     var result = 0;
@@ -227,25 +242,27 @@ var doCheckTask = function ($) {
     })
 };
 
-Offline.on('up', function () {
-    doCheckTask(Zepto);
-});
-Offline.on('down', function () {
-    Zepto('.mm-basic,.mm-advanced,.mm-is-online-checking').hide();
-    Zepto('.show').show();
-    $('body').removeClass('mm-is-page-online');
-});
+if (isLoadedCorrectly) {
+    Offline.on('up', function () {
+        doCheckTask(jQuery);
+    });
+    Offline.on('down', function () {
+        jQuery('.mm-basic,.mm-advanced,.mm-is-online-checking').hide();
+        jQuery('.show').show();
+        $('body').removeClass('mm-is-page-online');
+    });
 
-Zepto(function ($) {
-    $checkContainer = $('.josm-check');
-    $('.hide').hide();
-    doLocalJsonCheck($);
-    doJosmCheck($, $checkContainer);
-    Offline.check();
-    doCheckTask($);
-    window.setInterval(function () {
-        doJosmCheck($, $checkContainer);
+    jQuery(function ($) {
+        $checkContainer = $('.josm-check');
+        $('.hide').hide();
         doLocalJsonCheck($);
-    }, 3000);
+        doJosmCheck($, $checkContainer);
+        Offline.check();
+        doCheckTask($);
+        window.setInterval(function () {
+            doJosmCheck($, $checkContainer);
+            doLocalJsonCheck($);
+        }, 3000);
 
-});
+    });
+}

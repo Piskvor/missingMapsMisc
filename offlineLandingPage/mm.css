@@ -44,6 +44,10 @@ a {
 
 }
 
+.no-js-show {
+    display: none;
+}
+
 .checking:before, .correct:before, .error:before {
     font-family: 'Web Symbols';
     padding: 0.2em;
