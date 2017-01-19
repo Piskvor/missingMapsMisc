@@ -290,11 +290,10 @@ var doCheckTask = function ($) {
                                             $links.prop('href', $links.prop('href') + coordString);
                                         }
 
-
-
                                         if (areaData[projectId].done > 0) {
                                             $('.project-link-' + projectId).closest('.mm-is-online-done').find('.smtw-status').show().text('(' + areaData[projectId].done + '% hotovo)');
                                         }
+                                        $('.smtw-checking').hide();
                                     },
                                     error: function () {
                                         $('.smtw-checking').hide();
