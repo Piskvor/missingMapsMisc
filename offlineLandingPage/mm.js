@@ -340,7 +340,7 @@ var doCheckTask = function ($) {
                                         areaData[projectId].coords = null;
                                         if (typeof(project.geometry) !== 'undefined' || typeof(project.geometry.coordinates) !== 'undefined') {
                                             areaData[projectId].coords = processCoordinates(project.geometry.coordinates);
-                                            var coordString =  '&bounds=' + areaData[projectId].coords.left + ',' +areaData[projectId].coords.bottom + ',' + areaData[projectId].coords.right + ',' + areaData[projectId].coords.top;
+                                            var coordString =  '&bounds=' + areaData[projectId].coords.bottom + ',' +areaData[projectId].coords.left + ',' + areaData[projectId].coords.top + ',' + areaData[projectId].coords.right;
 
                                             $links.prop('href', $links.prop('href') + coordString);
                                         }
