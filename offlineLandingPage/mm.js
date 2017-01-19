@@ -25,9 +25,10 @@ if (typeof(window.Offline) === 'undefined' || typeof(window.$) === 'undefined') 
 
 var allowLocalJsonCheck = true;
 var allowJosmRemoteCheck = true;
+var allowOsmtmCheck = true;
 var allChecksPassed = false;
 var checkCount = 4;
-var rcWorkCountdown = 10;
+var rcWorkCountdown = 20;
 var checksPassed;
 var $checkContainer;
 
@@ -266,7 +267,7 @@ var doCheckTask = function ($) {
                         var $smtwLink = $elem.find('.smtw-link');
                         var projectId = $smtwLink.data('project-id');
                         if (projectId && areaData[projectId]) {
-                            if (typeof(areaData[projectId].bounds) === 'undefined') {
+                            if (allowOsmtmCheck && typeof(areaData[projectId].bounds) === 'undefined') {
                                 var jsonHref = areaData[projectId].href + '.json';
                                 var $links = $('.smtw-link-' + project.id);
                                 $('.smtw-checking').removeClass('hide').show();
