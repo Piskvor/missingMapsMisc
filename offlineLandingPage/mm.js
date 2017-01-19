@@ -1,5 +1,6 @@
 var isLoadedCorrectly = false;
-if (typeof(window.Offline) === 'undefined' || typeof(window.$) === 'undefined') {
+var isTimeagoLoaded = false;
+if (typeof(window.Offline) === 'undefined' || typeof(window.jQuery) === 'undefined') {
     // check if all loaded - else ugly-hack the DOM to show error
     window.setTimeout(function () {
         var badJs = document.getElementById('bad-js-show');
@@ -13,6 +14,58 @@ if (typeof(window.Offline) === 'undefined' || typeof(window.$) === 'undefined') 
     }, 100);
 } else { // we're all good: jQuery and Offline are loaded
     isLoadedCorrectly = true;
+    isTimeagoLoaded = (typeof(jQuery.timeago) !== 'undefined');
+    if (isTimeagoLoaded) {
+        jQuery.timeago.settings.allowFuture = true;
+        jQuery.timeago.settings.allowPast = false;
+        jQuery.timeago.settings.strings = {
+            prefixAgo: null,
+            prefixFromNow: "za",
+            suffixAgo: null,
+            suffixFromNow: null,
+            seconds: "méně než minutu",
+            minute: "minutu",
+            minutes: function(minutesCount) {
+                if (minutesCount < 5) {
+                    return "%d minuty";
+                } else {
+                    return "%d minut";
+                }
+            },
+            hour: "hodinu",
+            hours: function(hoursCount) {
+                if (hoursCount < 5) {
+                    return "%d hodiny";
+                } else {
+                    return "%d hodin";
+                }
+            },
+            day: "1 den",
+            days: function(daysCount) {
+                if (daysCount < 5) {
+                    return "%d dny";
+                } else {
+                    return "%d dní";
+                }
+            },
+            months: "1 měsíc",
+            months: function(monthCount) {
+                if (monthCount < 5) {
+                    return "%d měsíce";
+                } else {
+                    return "%d měsíců";
+                }
+            },
+            year: "1 rok",
+            years: function(yearCount) {
+                if (yearCount < 5) {
+                    return "%d roky";
+                } else {
+                    return "%d let";
+                }
+            }
+        };
+    }
     Offline.options = {
         checks: {
             image: {
@@ -25,7 +78,7 @@ if (typeof(window.Offline) === 'undefined' || typeof(window.$) === 'undefined') 
 
 var allowLocalJsonCheck = true;
 var allowJosmRemoteCheck = true;
-var allowOsmtmCheck = true;
+var allowOsmtmCheck = false;
 var allChecksPassed = false;
 var checkCount = 4;
 var rcWorkCountdown = 20;
@@ -308,14 +361,15 @@ var doCheckTask = function ($) {
                 $("#current-mapathon-location").prop("href", data.currentMapathon.location.link).text(data.currentMapathon.location.name);
                 $("#current-mapathon-map").prop("href", data.currentMapathon.location.map).text(data.currentMapathon.location.address);
                 var startDate = null;
-                var dates = data.currentMapathon.start.match(/((19|20)\d\d)([- /.])(0[1-9]|1[012])\3(0[1-9]|[12][0-9]|3[01]) ([012]?[0-9]):([0-5]?[0-9])/);
+                var dates = data.currentMapathon.start.match(/((19|20)\d\d)([- /.])(0[1-9]|1[012])\3(0[1-9]|[12][0-9]|3[01])T([012]?[0-9]):([0-5]?[0-9]):([0-5]?[0-9])Z/);
                 if (dates) {
                     startDate = new Date();
-                    startDate.setFullYear(dates[1]);
-                    startDate.setMonth(dates[4] - 1);
-                    startDate.setDate(dates[5]);
-                    startDate.setHours(dates[6]);
-                    startDate.setMinutes(dates[7]);
+                    startDate.setUTCFullYear(dates[1]);
+                    startDate.setUTCMonth(dates[4] - 1);
+                    startDate.setUTCDate(dates[5]);
+                    startDate.setUTCHours(dates[6]);
+                    startDate.setUTCMinutes(dates[7]);
+                    startDate.setUTCSeconds(dates[8]);
                 } else {
                     var dateTS = Date.parse(data.currentMapathon.start);
                     if (dateTS) {
@@ -330,7 +384,13 @@ var doCheckTask = function ($) {
                     var hours = startDate.getHours();
                     var minutes = startDate.getMinutes();
 
-                    $('#current-mapathon-date').text(day + ". " + monthNames[monthIndex] + " " + year + " v " + hours + ":" + (minutes < 10 ? "0" : "") + minutes);
+                    var $cmdate = $('#current-mapathon-date');
+                    $cmdate.attr('datetime', data.currentMapathon.start)
+                           .text(day + ". " + monthNames[monthIndex] + " " + year + " v " + hours + ":" + (minutes < 10 ? "0" : "") + minutes);
+                    if (isTimeagoLoaded) {
+                        $('#current-mapathon-timeago').attr('datetime', $cmdate.attr('datetime')).timeago();
+                        $cmdate.append(', tj.');
+                    }
                     $('.date-part').show();
                 }
             } else {

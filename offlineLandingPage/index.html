@@ -6,6 +6,9 @@
     <script src="jquery-3.1.1.min.js"
             integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
             crossorigin="anonymous"></script>
+    <script src="jquery.timeago.js"
+            integrity="sha384-C7hQ28/GoCqVvXJ93sRZQT1NNoKG1BDk81l12vmuMEJ++qKk7jgROS2PxpKEWzwd"
+            crossorigin="anonymous"></script>
     <script src="offline.min.js"
             integrity="sha384-Bj9xDKrR2zWeE7OL/xjvsCyehopovk/tyYg1raM9W5ykQ6Bk7Gt9vwhCIZfQOIVy"
             crossorigin="anonymous"></script>
@@ -32,7 +35,7 @@
 <div id="no-js-hide" class="mm-is-offline show no-js-hide">Čekám na připojení k internetu...<span class="checking"></span></div>
 <div class="mm-is-online-checking hide">Načítám aktuální data...<span class="checking"></span></div>
 <div class="mm-is-online-done current-mapathon hide">
-    Nejbližší mapathon je v <a id="current-mapathon-location" href="#" target="_blank"></a><span class="date-part hide">, <span id="current-mapathon-date"></span></span> (mapa: <a id="current-mapathon-map" href="#" target="_blank"></a>)
+    Nejbližší mapathon je v <a id="current-mapathon-location" href="#" target="_blank"></a><span class="date-part hide"> <span id="current-mapathon-date"></span> <time id="current-mapathon-timeago"></time></span>. Mapa: <a id="current-mapathon-map" href="#" target="_blank"></a>
 </div>
 <div class="mm-is-offline mm-is-online-checking show">
     <a href="http://tasks.hotosm.org/" target="_blank">HOT tasking manager - tasks.hotosm.org</a>
