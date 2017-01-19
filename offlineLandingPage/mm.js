@@ -1,3 +1,7 @@
+var allowLocalJsonCheck = true;  // check for local.json
+var allowJosmRemoteCheck = true; // check http://localhost:8111/
+var allowOsmtmCheck = true;      // check http://tasks.hotosm.org/ (can be slow)
+
 var isLoadedCorrectly = false;
 var isTimeagoLoaded = false;
 if (typeof(window.Offline) === 'undefined' || typeof(window.jQuery) === 'undefined') {
@@ -76,9 +80,6 @@ if (typeof(window.Offline) === 'undefined' || typeof(window.jQuery) === 'undefin
     };
 }
 
-var allowLocalJsonCheck = true;
-var allowJosmRemoteCheck = true;
-var allowOsmtmCheck = false;
 var allChecksPassed = false;
 var checkCount = 4;
 var rcWorkCountdown = 20;
