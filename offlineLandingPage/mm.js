@@ -29,7 +29,7 @@ if (typeof(window.Offline) === 'undefined' || typeof(window.jQuery) === 'undefin
             suffixFromNow: null,
             seconds: "méně než minutu",
             minute: "minutu",
-            minutes: function(minutesCount) {
+            minutes: function (minutesCount) {
                 if (minutesCount < 5) {
                     return "%d minuty";
                 } else {
@@ -37,7 +37,7 @@ if (typeof(window.Offline) === 'undefined' || typeof(window.jQuery) === 'undefin
                 }
             },
             hour: "hodinu",
-            hours: function(hoursCount) {
+            hours: function (hoursCount) {
                 if (hoursCount < 5) {
                     return "%d hodiny";
                 } else {
@@ -45,7 +45,7 @@ if (typeof(window.Offline) === 'undefined' || typeof(window.jQuery) === 'undefin
                 }
             },
             day: "1 den",
-            days: function(daysCount) {
+            days: function (daysCount) {
                 if (daysCount < 5) {
                     return "%d dny";
                 } else {
@@ -53,7 +53,7 @@ if (typeof(window.Offline) === 'undefined' || typeof(window.jQuery) === 'undefin
                 }
             },
             months: "1 měsíc",
-            months: function(monthCount) {
+            months: function (monthCount) {
                 if (monthCount < 5) {
                     return "%d měsíce";
                 } else {
@@ -61,7 +61,7 @@ if (typeof(window.Offline) === 'undefined' || typeof(window.jQuery) === 'undefin
                 }
             },
             year: "1 rok",
-            years: function(yearCount) {
+            years: function (yearCount) {
                 if (yearCount < 5) {
                     return "%d roky";
                 } else {
@@ -80,6 +80,8 @@ if (typeof(window.Offline) === 'undefined' || typeof(window.jQuery) === 'undefin
     };
 }
 
+var localDebug = (window.location.search.indexOf('?localDebug') === 0);
+var localDebugServer = 'http://localhost:8080';
 var allChecksPassed = false;
 var checkCount = 4;
 var rcWorkCountdown = 20;
@@ -247,7 +249,7 @@ var processCoordinates = function (coords, coordMaxMin) {
             "top": -90
         };
     }
-    if (coords.length === 2) {
+    if (coords.length === 2 && typeof(coords[0]) === 'number' && typeof(coords[1]) === 'number') {
         if (coordMaxMin.left > coords[0]) {
             coordMaxMin.left = coords[0];
         }
@@ -273,7 +275,7 @@ var doCheckTask = function ($) {
     $('.mm-is-offline').hide();
     $('.mm-is-online-checking').show();
     $.ajax({
-        url: 'https://piskvor.github.io/missingMapsMisc/mm.json',
+        url: (localDebug ? localDebugServer : 'https://piskvor.github.io') + '/missingMapsMisc/mm.json',
         method: 'GET',
         dataType: 'json',
         cache: false,
@@ -294,6 +296,9 @@ var doCheckTask = function ($) {
                             var dataHref = link.data('href');
                             if (dataHref) {
                                 var projectHref = dataHref.replace('__ID__', project.id);
+                                if (localDebug) {
+                                    projectHref = projectHref.replace('https://osmlab.github.io', localDebugServer);
+                                }
                                 if (link.hasClass('project-link') && checkAreas.indexOf(projectHref) < 0) {
                                     checkAreas.push(projectHref);
                                     areaData[project.id] = project;
@@ -319,39 +324,55 @@ var doCheckTask = function ($) {
                         $elem.hide();
                     } else {
                         var $smtwLink = $elem.find('.smtw-link');
+                        var $smtwParent = $smtwLink.parent();
                         var projectId = $smtwLink.data('project-id');
                         if (projectId && areaData[projectId]) {
                             if (allowOsmtmCheck && typeof(areaData[projectId].bounds) === 'undefined') {
                                 var jsonHref = areaData[projectId].href + '.json';
-                                var $links = $('.smtw-link-' + project.id);
+                                var $links = $('.smtw-link-' + projectId);
                                 $('.smtw-checking').removeClass('hide').show();
+
+                                if (localDebug) {
+                                    jsonHref = '/osmtm_project_' + projectId + '.json';
+                                }
                                 $.ajax({
                                     url: jsonHref,
                                     method: 'GET',
                                     dataType: 'json',
                                     cache: true,
                                     timeout: 30000,
-                                    success: function (project) {
-                                        var done = null;
-                                        if (typeof(project.properties.done) !== 'undefined') {
-                                            done = project.properties.done;
-                                        }
-                                        areaData[projectId].done = done;
-                                        areaData[projectId].coords = null;
-                                        if (typeof(project.geometry) !== 'undefined' || typeof(project.geometry.coordinates) !== 'undefined') {
-                                            areaData[projectId].coords = processCoordinates(project.geometry.coordinates);
-                                            var coordString =  '&bounds=' + areaData[projectId].coords.bottom + ',' +areaData[projectId].coords.left + ',' + areaData[projectId].coords.top + ',' + areaData[projectId].coords.right;
+                                    success: function (project, textStatus, jqXHR) {
+                                        if (typeof(project.properties) !== 'undefined' && typeof(project.id) !== 'undefined' && typeof(project.properties.name) !== 'undefined') {
+                                            if (localDebug) {
+                                                console.log(project, textStatus, jqXHR);
+                                            }
+                                            var done = null;
+                                            if (typeof(project.properties.done) !== 'undefined') {
+                                                done = project.properties.done;
+                                            }
+                                            areaData[project.id].done = done;
+                                            areaData[project.id].coords = null;
+                                            if (typeof(project.geometry) !== 'undefined' && typeof(project.geometry.coordinates) !== 'undefined') {
+                                                areaData[project.id].coords = processCoordinates(project.geometry.coordinates);
 
-                                            $links.prop('href', $links.prop('href') + coordString);
-                                        }
+                                                var coordString = '&bounds=' + areaData[project.id].coords.bottom + ',' + areaData[project.id].coords.left + ',' + areaData[project.id].coords.top + ',' + areaData[project.id].coords.right;
 
-                                        if (areaData[projectId].done > 0) {
-                                            $('.project-link-' + projectId).closest('.mm-is-online-done').find('.smtw-status').show().text('(' + areaData[projectId].done + '% hotovo)');
+                                                $links.prop('href', $links.prop('href') + coordString);
+                                            }
+
+                                            if (areaData[project.id].done > 0) {
+                                                $('.project-link-' + project.id).closest('.mm-is-online-done').find('.smtw-status').show().text('(' + areaData[project.id].done + '% hotovo)');
+                                            }
+                                        } else {
+                                            $smtwParent.find('.smtw-error').show();
                                         }
-                                        $('.smtw-checking').hide();
                                     },
-                                    error: function () {
-                                        $('.smtw-checking').hide();
+                                    error: function (jqXHR, textStatus, errorThrown) {
+                                        console.log(jqXHR, textStatus, errorThrown);
+                                        $smtwParent.find('.smtw-error').show();
+                                    },
+                                    complete: function () {
+                                        $smtwParent.find('.smtw-checking').hide();
                                     }
                                 });
                             }
@@ -387,7 +408,7 @@ var doCheckTask = function ($) {
 
                     var $cmdate = $('#current-mapathon-date');
                     $cmdate.attr('datetime', data.currentMapathon.start)
-                           .text(day + ". " + monthNames[monthIndex] + " " + year + " v " + hours + ":" + (minutes < 10 ? "0" : "") + minutes);
+                        .text(day + ". " + monthNames[monthIndex] + " " + year + " v " + hours + ":" + (minutes < 10 ? "0" : "") + minutes);
                     if (isTimeagoLoaded) {
                         $('#current-mapathon-timeago').attr('datetime', $cmdate.attr('datetime')).timeago();
                         $cmdate.append(', tj.');
