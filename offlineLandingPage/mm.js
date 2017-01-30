@@ -374,7 +374,11 @@ var doCheckTask = function ($) {
                                         } else {
                                             if (!isSecure) {
                                                 $smtwParent.find('.smtw-error').show();
-                                            } // else we're being blocked by browser, do not show error
+                                            } else {
+                                                // we're being blocked by browser, do not show error
+                                                // complete() does not fire though
+                                                $smtwParent.find('.smtw-checking').hide();
+                                            }
                                         }
                                     },
                                     error: function (jqXHR, textStatus, errorThrown) {
