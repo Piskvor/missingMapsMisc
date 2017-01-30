@@ -392,6 +392,10 @@ var doCheckTask = function ($) {
                                         }
                                     },
                                     error: function (jqXHR, textStatus, errorThrown) {
+                                        if (isSecure && textStatus == 'error' && errorThrown == '') {
+                                            // insecure request blocked, do not show error
+                                            return;
+                                        }
                                         console.log(jqXHR, textStatus, errorThrown);
                                         $smtwParent.find('.smtw-error').show();
                                     },
