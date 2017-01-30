@@ -2,6 +2,7 @@ var allowLocalJsonCheck = true;  // check for local.json
 var allowJosmRemoteCheck = true; // check http://localhost:8111/
 var allowOsmtmCheck = true;      // check http://tasks.hotosm.org/ (can be slow)
 
+var isSecure = (window.location.protocol === 'https:');
 var isLoadedCorrectly = false;
 var isTimeagoLoaded = false;
 if (typeof(window.Offline) === 'undefined' || typeof(window.jQuery) === 'undefined') {
@@ -82,6 +83,7 @@ if (typeof(window.Offline) === 'undefined' || typeof(window.jQuery) === 'undefin
 
 var localDebug = (window.location.search.indexOf('?localDebug') === 0);
 var localDebugServer = 'http://localhost:8080';
+var josmServer = (isSecure ? 'https://localhost:8112' : 'http://localhost:8111');
 var allChecksPassed = false;
 var checkCount = 4;
 var rcWorkCountdown = 20;
@@ -213,7 +215,7 @@ var doJosmCheck = function ($, $checkContainer) {
 //        showState($checkContainer, '.is-remote-control', null);
 //        window.setTimeout(function () {
         $.ajax({
-            url: 'http://localhost:8111/features',
+            url: josmServer + '/features',
             method: 'GET',
             dataType: 'json',
             cache: true,
@@ -334,6 +336,8 @@ var doCheckTask = function ($) {
 
                                 if (localDebug) {
                                     jsonHref = '/osmtm_project_' + projectId + '.json';
+                                } else if (isSecure) {
+                                    jsonHref = jsonHref.replace(/^http:/, 'https:');
                                 }
                                 $.ajax({
                                     url: jsonHref,
