@@ -336,9 +336,10 @@ var doCheckTask = function ($) {
 
                                 if (localDebug) {
                                     jsonHref = '/osmtm_project_' + projectId + '.json';
-                                } else if (isSecure) {
+                                } /* does not matter, gets blocked
+                                else if (isSecure) {
                                     jsonHref = jsonHref.replace(/^http:/, 'https:');
-                                }
+                                }*/
                                 $.ajax({
                                     url: jsonHref,
                                     method: 'GET',
@@ -365,10 +366,15 @@ var doCheckTask = function ($) {
                                             }
 
                                             if (areaData[project.id].done > 0) {
-                                                $('.project-link-' + project.id).closest('.mm-is-online-done').find('.smtw-status').show().text('(' + areaData[project.id].done + '% hotovo)');
+                                                $('.project-link-' + project.id).closest('.mm-is-online-done').find('.smtw-status').show()
+                                                    .text('(' + areaData[project.id].done + '% hotovo)')
+                                                    .append($('<span class="project-progress" width="' + Math.floor(areaData[project.id].done) + '%">&nbsp;</span>'))
+
                                             }
                                         } else {
-                                            $smtwParent.find('.smtw-error').show();
+                                            if (!isSecure) {
+                                                $smtwParent.find('.smtw-error').show();
+                                            } // else we're being blocked by browser, do not show error
                                         }
                                     },
                                     error: function (jqXHR, textStatus, errorThrown) {
