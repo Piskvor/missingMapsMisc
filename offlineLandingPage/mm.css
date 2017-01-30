@@ -48,6 +48,7 @@ a {
     display: none;
 }
 
+/*noinspection CssNoGenericFontName*/
 .checking:before, .correct:before, .error:before {
     font-family: 'Web Symbols';
     padding: 0.2em;
@@ -73,4 +74,24 @@ a {
         url('font/WebSymbols-Regular.ttf') format('truetype');
 	font-weight: normal;
 	font-style: normal;
+}
+
+.smtw-status {
+    position: relative;
+    border-bottom: 1px silver solid;
+}
+
+.project-progress {
+    position: absolute;
+    left: 0;
+    height: 2px;
+    display: block;
+    background-color: #b7ad40;
+}
+
+.project-progress.progress-start {
+    background-color: #e90b31 !important;
+}
+.project-progress.progress-end {
+    background-color: #25e925 !important;
 }

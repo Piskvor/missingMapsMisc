@@ -53,7 +53,7 @@ if (typeof(window.Offline) === 'undefined' || typeof(window.jQuery) === 'undefin
                     return "%d dní";
                 }
             },
-            months: "1 měsíc",
+            month: "1 měsíc",
             months: function (monthCount) {
                 if (monthCount < 5) {
                     return "%d měsíce";
@@ -177,7 +177,7 @@ var showState = function ($checkContainer, checkName, state) {
     return result;
 };
 
-var doLocalJsonCheck = function ($, noRepeat) {
+var doLocalJsonCheck = function ($) {
     if (allowLocalJsonCheck && !allChecksPassed) {
         $.ajax({
             url: 'local.json',
@@ -366,9 +366,19 @@ var doCheckTask = function ($) {
                                             }
 
                                             if (areaData[project.id].done > 0) {
-                                                $('.project-link-' + project.id).closest('.mm-is-online-done').find('.smtw-status').show()
+                                                var $progress =$('<span class="project-progress"></span>');
+                                                var pct = Math.floor(areaData[project.id].done);
+                                                var $smtwStatus = $('.project-link-' + project.id).closest('.mm-is-online-done').find('.smtw-status');
+                                                $smtwStatus.show()
                                                     .text('(' + areaData[project.id].done + '% hotovo)')
-                                                    .append($('<span class="project-progress" width="' + Math.floor(areaData[project.id].done) + '%">&nbsp;</span>'))
+                                                    .append($progress);
+                                                $progress.width(pct + '%');
+                                                if (pct < 30) {
+                                                    $progress.addClass('progress-start');
+                                                } else if (pct > 85) {
+                                                    $progress.addClass('progress-end');
+                                                }
+                                                $progress.css('top: ' + $smtwStatus.height() + 'px !important');
 
                                             }
                                         } else {
