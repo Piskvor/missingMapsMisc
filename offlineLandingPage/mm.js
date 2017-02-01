@@ -212,16 +212,14 @@ var doLocalJsonCheck = function ($) {
 
 var doJosmCheck = function ($, $checkContainer) {
     if (allowJosmRemoteCheck) {
-//        showState($checkContainer, '.is-remote-control', null);
-//        window.setTimeout(function () {
         $.ajax({
-            url: josmServer + '/features',
+            url: josmServer + '/version',
             method: 'GET',
             dataType: 'json',
             cache: true,
             timeout: 500,
-            success: function (features) {
-                if (features.length > 0) {
+            success: function (version) {
+                if (typeof(version) !== 'undefined' && typeof(version.protocolversion) !== 'undefined') {
                     allChecksPassed = true;
                     showState($checkContainer, '.is-remote-control', 1);
                     rcWorkCountdown--;
@@ -234,7 +232,6 @@ var doJosmCheck = function ($, $checkContainer) {
                 //allowJosmRemoteCheck = false;
             }
         });
-//        }, 500)
 
         if (rcWorkCountdown <= 0) {
             allowJosmRemoteCheck = false;
