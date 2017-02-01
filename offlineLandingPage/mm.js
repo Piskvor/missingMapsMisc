@@ -329,7 +329,7 @@ var doCheckTask = function ($) {
                         var $smtwParent = $smtwLink.parent();
                         var projectId = $smtwLink.data('project-id');
                         if (projectId && areaData[projectId]) {
-                            if (allowOsmtmCheck && typeof(areaData[projectId].bounds) === 'undefined') {
+                            if (allowOsmtmCheck && typeof(areaData[projectId].coords) === 'undefined') {
                                 var jsonHref = areaData[projectId].href + '.json';
                                 var $links = $('.smtw-link-' + projectId);
                                 $('.smtw-checking').removeClass('hide').show();
