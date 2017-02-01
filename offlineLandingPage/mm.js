@@ -435,12 +435,20 @@ var doCheckTask = function ($) {
                     var minutes = startDate.getMinutes();
 
                     var $cmdate = $('#current-mapathon-date');
-                    $cmdate.attr('datetime', data.currentMapathon.start)
-                        .text(day + ". " + monthNames[monthIndex] + " " + year + " v " + hours + ":" + (minutes < 10 ? "0" : "") + minutes);
-                    if (isTimeagoLoaded) {
-                        $('#current-mapathon-timeago').attr('datetime', $cmdate.attr('datetime')).timeago();
-                        $cmdate.append(', tj.');
+                    var mapathonText = " " + day + ". " + monthNames[monthIndex] + " " + year;
+                    var now = new Date();
+                    if(now < startDate) {
+                        mapathonText += " v " + hours + ":" + (minutes < 10 ? "0" : "") + minutes;
+                        if (isTimeagoLoaded) {
+                            $('#current-mapathon-timeago').attr('datetime', $cmdate.attr('datetime')).timeago();
+                            $cmdate.append(', tj.');
+                        }
+                    } else {
+                        $('.mapathon-past').show();
+                        $('.mapathon-future').hide();
                     }
+                    $cmdate.attr('datetime', data.currentMapathon.start)
+                        .text(mapathonText);
                     $('.date-part').show();
                 }
             } else {
