@@ -1,6 +1,6 @@
 # Úvodní obrazovka k mapathonu
 
-[Aktuální mapathon a rozcestník](start/)
+[Aktuální mapathon a rozcestník](https://piskvor.github.io/missingMapsMisc/start/)
 
 # Základní instalace JOSM 
 
