@@ -3,6 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>#missingMaps</title>
+    <script>
+        // redirect "/start" to "/start/"
+        if (!window.location.pathname.match(/\/$/)) {
+            window.location =
+                window.location.protocol
+                + '//'
+                + window.location.host
+                + window.location.pathname
+                + '/'
+                + window.location.search
+                + window.location.hash;
+        }
+    </script>
     <script src="jquery-3.1.1.min.js"
             integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
             crossorigin="anonymous"></script>
