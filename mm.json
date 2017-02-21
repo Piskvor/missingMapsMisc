@@ -11,16 +11,16 @@
         "name": "Aweil, South Sudan"
       }
     },
-    "name": "lednový mapathon MSF",
-    "start": "2017-01-31T17:00:00Z",
+    "name": "únorový mapathon MSF",
+    "start": "2017-02-28T17:00:00Z",
     "location": {
-      "name": "Opero",
-      "address": "Salvátorská 931/8, Praha 1",
-      "lat": "50.08862",
-      "lon": "14.4210565",
+      "name": "K10",
+      "address": "Koperníkova 10, Praha 2",
+      "lat": "50.0702",
+      "lon": "14.4422",
       "zoom": 16,
-      "map": "https://openstreetmap.cz/node/4556733089#map=16/50.0883/14.4227",
-      "link": "http://www.opero.cz/cs"
+      "map": "https://openstreetmap.cz/node/296609346#map=16/50.0702/14.4422",
+      "link": "http://k10.online/"
     }
   }
 }
