@@ -1,6 +1,7 @@
 var allowLocalJsonCheck = true;  // check for local.json
 var allowJosmRemoteCheck = true; // check http://localhost:8111/
 var allowOsmtmCheck = true;      // check http://tasks.hotosm.org/ (can be slow)
+var useTmProxy = true;           // use a caching HTTPS proxy for OSMTM requests (faster, but brings an extra dependency)
 
 var isSecure = (window.location.protocol === 'https:');
 var isLoadedCorrectly = false;
@@ -83,6 +84,7 @@ if (typeof(window.Offline) === 'undefined' || typeof(window.jQuery) === 'undefin
 
 var localDebug = (window.location.search.indexOf('?localDebug') === 0);
 var localDebugServer = 'http://localhost:8080';
+var osmTmProxy = (isSecure ? 'https://' : 'http://' ) + 'osm.piskvor.org/show-taskman/';
 var josmServer = (isSecure ? 'https://localhost:8112' : 'http://localhost:8111');
 var allChecksPassed = false;
 var checkCount = 4;
@@ -248,7 +250,7 @@ var processCoordinates = function (coords, coordMaxMin) {
             "top": -90
         };
     }
-    if (coords.length === 2 && typeof(coords[0]) === 'number' && typeof(coords[1]) === 'number') {
+    if (coords.length === 2 && ((typeof(coords[0]) === 'number' && typeof(coords[1]) === 'number') || (typeof(coords[0]) === 'string' && typeof(coords[1]) === 'string'))) {
         if (coordMaxMin.left > coords[0]) {
             coordMaxMin.left = coords[0];
         }
@@ -328,6 +330,9 @@ var doCheckTask = function ($) {
                         if (projectId && areaData[projectId]) {
                             if (allowOsmtmCheck && typeof(areaData[projectId].coords) === 'undefined') {
                                 var jsonHref = areaData[projectId].href + '.json';
+                                if (useTmProxy) {
+                                    jsonHref = osmTmProxy + projectId + '-simplified.json';
+                                }
                                 var $links = $('.smtw-link-' + projectId);
                                 $('.smtw-checking').removeClass('hide').show();
 
