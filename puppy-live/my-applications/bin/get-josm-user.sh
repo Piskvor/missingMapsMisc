@@ -6,6 +6,10 @@ else
     FORCE_SET_RUNNING=0
 fi
 
+TMP="/tmp"
+if [ -d "$HOME/tmp" ] ; then
+    TMP="$HOME/tmp"
+fi
 OUT_FILE="$HOME/Web-Server/local.json"
 JOSM_PATH="$HOME/.config/JOSM"
 JOSM_FILE="$JOSM_PATH/preferences.xml"
@@ -27,7 +31,7 @@ else
     if [ "$FORCE_SET_RUNNING" = -1 ] ; then
         IS_RUNNING=0
     else
-        PID=$(find /tmp/josm* -name 'josm*-runner.pid' -exec cat {} \; 2>/dev/null)
+        PID=$(find ${TMP}/josm* -name 'josm*-runner.pid' -exec cat {} \; 2>/dev/null)
         if [ "$PID" != "" ] ; then
             IS_RUNNING=$(ps -p "$PID" -o pid= | wc -l)
         fi

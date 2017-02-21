@@ -1,6 +1,10 @@
 #!/bin/bash
 BASE_NAME=$(basename $0)
-TMPDIR="/tmp/${BASE_NAME}-${USER}"
+TMP="/tmp"
+if [ -d "$HOME/tmp" ] ; then
+    TMP="$HOME/tmp"
+fi
+TMPDIR="$TMP/${BASE_NAME}-${USER}"
 TMPFILE="${TMPDIR}/${BASE_NAME}-runner.pid"
 
 # clean up the directory
@@ -12,8 +16,11 @@ function cleanup {
 if mkdir $TMPDIR 2>/dev/null; then
 	trap "cleanup" EXIT
 
-    DIR_NAME=/root/my-applications/bin
+    DIR_NAME=$HOME/bin
     SPOT=${DIR_NAME}/spot
+    if [ ! -x "$SPOT" ]; then
+        SPOT="eval"
+    fi
     JAR_NAME="${BASE_NAME}.jar"
     LOCAL_NAME="${DIR_NAME}/${JAR_NAME}"
     ${SPOT} ${DIR_NAME}/get-josm-user.sh 1 &
