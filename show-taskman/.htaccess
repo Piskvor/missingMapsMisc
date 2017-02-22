@@ -1,0 +1,6 @@
+Options -Indexes
+RewriteEngine On
+
+RewriteRule ^\.(.*)$ - [R=404,L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php [QSA,L]

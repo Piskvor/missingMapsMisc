@@ -2,4 +2,5 @@
 *.zip
 offlineLandingPage/local.json
 puppy-live/my-applications/icons/ROX
-2*.json
+show-taskman/cache/
+!mm.json
