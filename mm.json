@@ -1,26 +1,26 @@
 {
-  "current": 2522,
+  "current": 2523,
   "currentMapathon": {
     "projects": {
       "basic": {
-        "id": 2522,
-        "name": "Aweil, South Sudan, part 2c"
+        "id": 2523,
+        "name": "Aweil, South Sudan, part 2d - residential areas and buildings"
       },
       "advanced": {
-        "id": 2522,
-        "name": "Aweil, South Sudan, part 2c"
+        "id": 2523,
+        "name": "Aweil, South Sudan, part 2d - residential areas and buildings"
       }
     },
-    "name": "únorový mapathon MSF",
-    "start": "2017-02-28T17:00:00Z",
+    "name": "březnový mapathon MSF",
+    "start": "2017-03-28T17:00:00Z",
     "location": {
-      "name": "K10",
-      "address": "Koperníkova 10, Praha 2",
-      "lat": "50.0702",
-      "lon": "14.4422",
+      "name": "Svět-HUB",
+      "address": "Slovenská 21, Praha 2",
+      "lat": "50.0727349",
+      "lon": "14.4461862",
       "zoom": 16,
-      "map": "https://openstreetmap.cz/node/296609346#map=16/50.0702/14.4422",
-      "link": "http://k10.online/"
+      "map": "https://openstreetmap.cz/node/296592981#map=16/50.07273/14.44619&layers=x",
+      "link": "http://www.svet-hub.cz/"
     }
   }
 }
