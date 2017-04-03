@@ -19,7 +19,7 @@ function osm_piskvor_org_share(e) {
     }
     const isCz = url.indexOf('openstreetmap.cz') > -1 || url.indexOf('osmap.cz') > -1;
     if (isCz) {
-        url = url.replace(/(openstreet|os)map\.cz/, 'openstreetmap.org');
+        url = url.replace(/^https?:\/\/(www\.)?(openstreet|os)map\.cz/, 'https://www.openstreetmap.org');
     }
     const hasHash = url.indexOf("#");
     // if hash, try to convert
