@@ -58,6 +58,7 @@ class ProjectParser extends AbstractCoordinateParser
      *  - if .json in cache, load and compute .poly
      *  - else load .json from TM
      * @return Polygon
+     * @throws \ErrorException
      */
     public function getPolygon()
     {
@@ -99,6 +100,9 @@ class ProjectParser extends AbstractCoordinateParser
         $projectData = @json_decode($this->fetch(), true);
         if (json_last_error()) {
             $projectData = array();
+        }
+        if (isset($projectData['properties'], $projectData['properties']['done']) && !isset($projectData['properties']['complete'])) {
+            $projectData['properties']['complete'] = (float)$projectData['properties']['done'] + (float)$projectData['properties']['validated'];
         }
         return $projectData;
     }
