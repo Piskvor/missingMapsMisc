@@ -16,41 +16,47 @@
                 + window.location.hash;
         }
     </script>
-    <script src="jquery-3.1.1.min.js"
-            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-            crossorigin="anonymous"></script>
-    <script src="jquery.timeago.js"
-            integrity="sha384-C7hQ28/GoCqVvXJ93sRZQT1NNoKG1BDk81l12vmuMEJ++qKk7jgROS2PxpKEWzwd"
-            crossorigin="anonymous"></script>
-    <script src="offline.min.js"
-            integrity="sha384-Bj9xDKrR2zWeE7OL/xjvsCyehopovk/tyYg1raM9W5ykQ6Bk7Gt9vwhCIZfQOIVy"
-            crossorigin="anonymous"></script>
+    <link rel="preload" href="mm-query.png" as="image" />
+    <link rel="preload" href="font/WebSymbols-Regular.woff" as="font" type="font/woff" crossorigin="anonymous" />
+    <link rel="preload" href="mm.css" as="style" />
+    <link rel="preload" href="mm.js" as="script" />
+    <link rel="preload" href="jquery-3.1.1.min.js" as="script" />
+    <link rel="preload" href="jquery.timeago.js" as="script" />
+    <link rel="preload" href="mm.png" as="image" />
+
     <link rel="stylesheet" href="offline-theme-slide.css"/>
     <link rel="stylesheet" href="offline-language-czech.css"/>
     <link rel="stylesheet" href="mm.css"/>
 
-    <script src="mm.js"></script>
     <noscript>
         <!--suppress CssUnusedSymbol -->
         <style>
             .hide, .no-js-hide {
-                display:none !important;
+                display: none !important;
             }
+
             .no-js-show {
                 display: block !important;
             }
         </style>
     </noscript>
+
 </head>
 <body>
-<h1><a href="https://www.facebook.com/groups/missingmapscz/">#missingMaps</a> <span id="current-mapathon-name">mapathon</span></h1>
+<h1><a href="https://www.facebook.com/groups/missingmapscz/">#missingMaps</a> <span
+        id="current-mapathon-name">mapathon</span></h1>
 <div class="status-block block">
     <div id="no-js-show" class="hide no-js-show">Javascript je <span class="error">vypnutý</span></div>
     <div id="bad-js-show" class="hide bad-js-show">Javascript se <span class="error">nenačetl</span></div>
-    <div id="no-js-hide" class="mm-is-offline show no-js-hide">Čekám na připojení k internetu...<span class="checking"></span></div>
+    <div id="no-js-hide" class="mm-is-offline show no-js-hide">Čekám na připojení k internetu...<span
+            class="checking"></span></div>
     <div class="mm-is-online-checking hide">Načítám aktuální data...<span class="checking"></span></div>
     <div class="mm-is-online-done current-mapathon hide">
-        <span class="mapathon-future">Nejbližší mapathon je</span><span class="mapathon-past hide">Minulý mapathon byl</span> v <a id="current-mapathon-location" href="#" target="_blank"></a><span class="date-part hide"> <span id="current-mapathon-date"></span><time id="current-mapathon-timeago"></time></span>. Mapa: <a id="current-mapathon-map" href="#" target="_blank"></a>
+        <span class="mapathon-future">Nejbližší mapathon je</span><span
+            class="mapathon-past hide">Minulý mapathon byl</span> v <a id="current-mapathon-location" href="#"
+                                                                       target="_blank"></a><span class="date-part hide"> <span
+            id="current-mapathon-date"></span><time id="current-mapathon-timeago"></time></span>. Mapa: <a
+            id="current-mapathon-map" href="#" target="_blank"></a>
     </div>
     <div class="mm-is-offline mm-is-online-checking show">
         <a href="http://tasks.hotosm.org/" target="_blank">HOT tasking manager - tasks.hotosm.org</a>
@@ -61,24 +67,29 @@
 </div>
 <div class="mm-basic-block block">
     <div class="mm-is-online-done mm-basic hide">
-        <a class="mm-link project-link" href="http://tasks.hotosm.org/" data-href="http://tasks.hotosm.org/project/__ID__"
-           target="_blank">Základní mapování (v prohlížeči, tj. editor iD): #__ID__ - __NAME__</a> <span class="smtw-status hide"> </span>
+        <a class="mm-link project-link" href="http://tasks.hotosm.org/"
+           data-href="http://tasks.hotosm.org/project/__ID__"
+           target="_blank">Základní mapování (v prohlížeči, tj. editor iD): #__ID__ - __NAME__</a> <span
+            class="smtw-status hide"> </span>
     </div>
     <div class="mm-is-online-done mm-basic less-interesting smtw hide">
         <a class="mm-link smtw-link" href="https://osmlab.github.io/show-me-the-way/"
            data-href="https://osmlab.github.io/show-me-the-way/#comment=hotosm-project-__ID__" target="_blank">Sledování
-            změn: #__ID__ - __NAME__</a><span class="smtw-checking checking hide" title="Načítá se..."></span><span class="smtw-error error hide">Data se nepodařilo načíst.</span>
+            změn: #__ID__ - __NAME__</a><span class="smtw-checking checking hide" title="Načítá se..."></span><span
+            class="smtw-error error hide">Data se nepodařilo načíst.</span>
     </div>
 </div>
 <div class="mm-advanced-block block">
     <div class="mm-is-online-done mm-advanced hide">
-        <a class="mm-link project-link" href="http://tasks.hotosm.org/" data-href="http://tasks.hotosm.org/project/__ID__"
+        <a class="mm-link project-link" href="http://tasks.hotosm.org/"
+           data-href="http://tasks.hotosm.org/project/__ID__"
            target="_blank">Pokročilé mapování (v JOSM): #__ID__ - __NAME__</a> <span class="smtw-status hide"> </span>
     </div>
     <div class="mm-is-online-done mm-advanced less-interesting smtw hide">
         <a class="mm-link smtw-link" href="https://osmlab.github.io/show-me-the-way/"
            data-href="https://osmlab.github.io/show-me-the-way/#comment=hotosm-project-__ID__" target="_blank">Sledování
-            změn: #__ID__ - __NAME__</a><span class="smtw-checking checking hide" title="Načítá se..."></span><span class="smtw-error error hide">Data se nepodařilo načíst.</span>
+            změn: #__ID__ - __NAME__</a><span class="smtw-checking checking hide" title="Načítá se..."></span><span
+            class="smtw-error error hide">Data se nepodařilo načíst.</span>
     </div>
 </div>
 <div class="tech-help block">
@@ -87,18 +98,33 @@
     </div>
     <fieldset class="josm-check hide">
         <legend>Výsledek kontroly instalace</legend>
-        <div class="is-running">JOSM je spuštěn: <span class="checking"></span> <span class="correct hide">OK</span><span class="error hide">ne</span></div>
-        <div class="is-logged-in">Přihlášení přes OSM: <span class="checking"></span> <span class="correct hide">OK</span><span class="error hide">ne</span></div>
-        <div class="has-buildings-tools">doplněk <em>buildings_tools</em>: <span class="checking"></span> <span class="correct hide">OK</span><span class="error hide">chybí</span></div>
+        <div class="is-running">JOSM je spuštěn: <span class="checking"></span> <span
+                class="correct hide">OK</span><span class="error hide">ne</span></div>
+        <div class="is-logged-in">Přihlášení přes OSM: <span class="checking"></span> <span
+                class="correct hide">OK</span><span class="error hide">ne</span></div>
+        <div class="has-buildings-tools">doplněk <em>buildings_tools</em>: <span class="checking"></span> <span
+                class="correct hide">OK</span><span class="error hide">chybí</span></div>
         <!--
         <div class="has-all-plugins">Všechny doplňky nainstalovány: <span class="checking"></span> <span class="correct hide">OK</span><span class="error hide">chybí</span></div>
         -->
-        <div class="has-remote-control"><em>Dálkové ovládání</em> je povoleno: <span class="checking"></span> <span class="correct hide">OK</span><span class="error hide">ne</span></div>
-        <div class="is-remote-control"><em>Dálkové ovládání</em> je právě aktivní: <span class="checking"></span> <span class="correct hide">OK</span><span class="error hide">ne</span></div>
+        <div class="has-remote-control"><em>Dálkové ovládání</em> je povoleno: <span class="checking"></span> <span
+                class="correct hide">OK</span><span class="error hide">ne</span></div>
+        <div class="is-remote-control"><em>Dálkové ovládání</em> je právě aktivní: <span class="checking"></span> <span
+                class="correct hide">OK</span><span class="error hide">ne</span></div>
     </fieldset>
     <div class="less-interesting">
         <a href="https://piskvor.github.io/missingMapsMisc/">Technické návody k JOSM</a>
     </div>
 </div>
+<script src="jquery-3.1.1.min.js"
+        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+        crossorigin="anonymous"></script>
+<script src="jquery.timeago.js"
+        integrity="sha384-C7hQ28/GoCqVvXJ93sRZQT1NNoKG1BDk81l12vmuMEJ++qKk7jgROS2PxpKEWzwd"
+        crossorigin="anonymous"></script>
+<script src="offline.min.js"
+        integrity="sha384-Bj9xDKrR2zWeE7OL/xjvsCyehopovk/tyYg1raM9W5ykQ6Bk7Gt9vwhCIZfQOIVy"
+        crossorigin="anonymous"></script>
+<script src="mm.js"></script>
 </body>
 </html>
