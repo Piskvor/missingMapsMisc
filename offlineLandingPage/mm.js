@@ -150,7 +150,8 @@ if (0) { // dummy structure for JS code hinting, never gets executed
             "description": "",
             "priority": 2,
             "done": 11.98,
-            "validated": 0.53
+            "validated": 0.53,
+            "complete": 12.51
         }
     };
 }
@@ -160,7 +161,6 @@ var monthNames = [
     "srpna", "září", "října",
     "listopadu", "prosince"
 ];
-
 
 var showState = function ($checkContainer, checkName, state) {
     var result = 0;
@@ -355,7 +355,14 @@ var doCheckTask = function ($) {
                                             }
                                             var done = null;
                                             if (typeof(project.properties.done) !== 'undefined') {
-                                                done = project.properties.done;
+                                                if (typeof(project.properties.complete) !== 'undefined') {
+                                                    done = project.properties.complete;
+                                                } else {
+                                                    done = project.properties.done;
+                                                    if (typeof(project.properties.validated) !== 'undefined') {
+                                                        done += project.properties.validated;
+                                                    }
+                                                }
                                             }
                                             areaData[project.id].done = done;
                                             areaData[project.id].coords = null;
