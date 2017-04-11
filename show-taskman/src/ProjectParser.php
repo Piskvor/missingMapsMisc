@@ -28,6 +28,14 @@ class ProjectParser extends AbstractCoordinateParser
      */
     private $urlTemplate = 'http://tasks.hotosm.org/project/%d.json';
 
+    /** @var array of fields to empty in simplified version */
+    private static $stripFromSimplified = array(
+        'description',
+        'short_description',
+        'instructions',
+        'per_task_instructions'
+    );
+
     /**
      * ProjectParser constructor.
      * @param UrlFetching $fetcher
@@ -88,7 +96,8 @@ class ProjectParser extends AbstractCoordinateParser
      * Check if empty by asking the polygon
      * @return bool
      */
-    public function isEmpty() {
+    public function isEmpty()
+    {
         return $this->getPolygon()->isEmpty();
     }
 
@@ -96,7 +105,8 @@ class ProjectParser extends AbstractCoordinateParser
      * Load the JSON data from cache/OSMTM
      * @return array
      */
-    private function getProjectData() {
+    private function getProjectData()
+    {
         $projectData = @json_decode($this->fetch(), true);
         if (json_last_error()) {
             $projectData = array();
@@ -111,11 +121,13 @@ class ProjectParser extends AbstractCoordinateParser
      * Fetch from URL (cached)
      * @return false|string
      */
-    public function fetch() {
+    public function fetch()
+    {
         return $this->fetcher->fetch($this->getUrl());
     }
 
-    public function fetchSimplified() {
+    public function fetchSimplified()
+    {
         $projectFile = $this->taskmanId . '-simplified.json';
         $hostname = 'tasks.hotosm.org';
         $cachedVersion = $this->cache->fetch($hostname, $projectFile);
@@ -124,8 +136,17 @@ class ProjectParser extends AbstractCoordinateParser
         } else {
             $polygon = $this->getPolygon();
             $projectData = $this->getProjectData();
-            if ($projectData && isset($projectData['geometry'])) {
-                $projectData['geometry']['coordinates'] = $polygon->getBounds()->getBoundingPoints();
+            if ($projectData) {
+                if (isset($projectData['geometry'])) {
+                    $projectData['geometry']['coordinates'] = $polygon->getBounds()->getBoundingPoints();
+                }
+                if (isset($projectData['properties'])) {
+                    foreach (self::$stripFromSimplified as $fieldName) {
+                        if (isset($projectData['properties'][$fieldName])) {
+                            $projectData['properties'][$fieldName] = '';
+                        }
+                    }
+                }
             }
             $content = json_encode($projectData);
             if ($content) {
