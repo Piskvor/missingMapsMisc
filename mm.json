@@ -11,16 +11,16 @@
         "name": "Nigeria (project 1: roads and residential areas)"
       }
     },
-    "name": "dubnový mapathon MSF",
-    "start": "2017-04-25T17:30:00Z",
+    "name": "červnový mapathon MSF",
+    "start": "2017-06-27T17:30:00Z",
     "location": {
-      "name": "Ackee",
-      "address": "Karolinská 650/1",
-      "lat": "50.0946",
-      "lon": "14.4439",
+      "name": "Paralelní Polis",
+      "address": "Dělnická 475/43",
+      "lat": "50.10339",
+      "lon": "14.45060",
       "zoom": 16,
-      "map": "https://openstreetmap.cz/way/33088321#map=16/50.0946/14.4439&layers=x",
-      "link": "https://www.ackee.cz/"
+      "map": "http://www.openstreetmap.org/way/29121876#map=18/50.10326/14.45087",
+      "link": "https://www.paralelnipolis.cz/"
     }
   }
 }
