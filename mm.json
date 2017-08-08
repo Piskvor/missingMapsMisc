@@ -11,16 +11,16 @@
         "name": "Niger State (north), Nigeria (project 3: roads and residential areas )"
       }
     },
-    "name": "červnový mapathon MSF",
-    "start": "2017-06-27T17:30:00Z",
+    "name": "srpnový mapathon MSF",
+    "start": "2017-08-29T16:00:00Z",
     "location": {
-      "name": "Paralelní Polis",
-      "address": "Dělnická 475/43",
-      "lat": "50.10339",
-      "lon": "14.45060",
-      "zoom": 16,
-      "map": "http://www.openstreetmap.org/way/29121876#map=18/50.10326/14.45087",
-      "link": "https://www.paralelnipolis.cz/"
+      "name": "Avast Software - Enterprise Office Center",
+      "address": "Pikrtova 1737/1a",
+      "lat": "50.0521859",
+      "lon": "14.4411868",
+      "zoom": 17,
+      "map": "https://openstreetmap.cz/node/2801269698#map=17/50.05204/14.44031&layers=x",
+      "link": "https://www.avast.com/"
     }
   }
 }
