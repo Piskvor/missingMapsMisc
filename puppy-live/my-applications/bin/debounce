@@ -2,7 +2,11 @@
 
 set -euxo pipefail
 
-BASE_NAME="$(basename $0)-$(basename ${1:-})"
+if [[ "${1:-}" = "" ]]; then
+    echo "Usage: $0 command"
+fi
+
+BASE_NAME="$(basename $0)-$(basename $1)"
 TMP="/tmp"
 if [[ -d "$HOME/tmp" ]] ; then
     TMP="$HOME/tmp"
