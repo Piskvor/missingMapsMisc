@@ -1,9 +1,14 @@
 #!/bin/bash
 
-set -euxo pipefail
+set -o errexit
+set -o errtrace
+set -o nounset
+set -o pipefail
+#set -o xtrace
 
 if [[ "${1:-}" = "" ]]; then
     echo "Usage: $0 command"
+    exit 1
 fi
 
 BASE_NAME="$(basename $0)-$(basename $1)"
