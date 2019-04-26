@@ -1,7 +1,7 @@
 #!/bin/bash
 BASE_NAME=$(basename $0)
 TMP="/tmp"
-if [ -d "$HOME/tmp" ] ; then
+if [[ -d "$HOME/tmp" ]] ; then
     TMP="$HOME/tmp"
 fi
 TMPDIR="$TMP/${BASE_NAME}-${USER}"
@@ -18,35 +18,35 @@ if mkdir $TMPDIR 2>/dev/null; then
 
     DIR_NAME=$HOME/bin
     SPOT=${DIR_NAME}/spot
-    if [ ! -x "$SPOT" ]; then
+    if [[ ! -x "$SPOT" ]]; then
         SPOT="eval"
     fi
     JAR_NAME="${BASE_NAME}.jar"
     LOCAL_NAME="${DIR_NAME}/${JAR_NAME}"
     ${SPOT} ${DIR_NAME}/get-josm-user.sh 1 &
 
-	if [ -f "$LOCAL_NAME" ]; then
+	if [[ -f "$LOCAL_NAME" ]]; then
 		VERSION_LOCAL=$(java -jar "$LOCAL_NAME" --version  2> /dev/null | grep 'JOSM' | sed 's/.*(//g;s/ [a-z]\+).*//g') 2> /dev/null
 	else
 		VERSION_LOCAL=0
 	fi
-	if [ -f "/usr/bin/$BASE_NAME" ]; then
+	if [[ -f "/usr/bin/$BASE_NAME" ]]; then
 		VERSION_REPO=$(/usr/bin/${BASE_NAME} --version  2> /dev/null | grep 'JOSM' | sed 's/.*(//g;s/ [a-z]\+).*//g') 2> /dev/null
 	else
 		VERSION_REPO=0
 	fi
-	if [ "$VERSION_LOCAL" -gt "$VERSION_REPO" ]; then
+	if [[ "$VERSION_LOCAL" -gt "$VERSION_REPO" ]]; then
 		echo Using ${JAVA_HOME} to run local ${LOCAL_NAME}
 		JOSM="java -jar $LOCAL_NAME $*"
 	else
 		JOSM=/usr/bin/${BASE_NAME}
 	fi
-    if [ "$VERSION_LOCAL" -eq 0 -a "$VERSION_REPO" -eq 0 ]; then
+    if [[ "$VERSION_LOCAL" -eq 0 && "$VERSION_REPO" -eq 0 ]]; then
         echo "No version found!"
         exit 35
     fi
     IS_RUNNING=$(ps -A f | grep ${JAR_NAME} | grep java -c)
-    if [ "$IS_RUNNING" -gt 0 ]; then
+    if [[ "$IS_RUNNING" -gt 0 ]]; then
         echo "Already running, quit"
         exit 4
     fi
@@ -56,12 +56,12 @@ if mkdir $TMPDIR 2>/dev/null; then
     ${SPOT} ${JOSM} $* &
 
     JOSM_PID=$!
-    if [ "$JOSM_PID" != "" ]; then
+    if [[ "$JOSM_PID" != "" ]]; then
         echo -n "$JOSM_PID" > "${TMPFILE}"
         $(
             sleep 1
             for i in $(seq 1 20) ; do
-                if [ -x "${DIR_NAME}/get-josm-user.sh" ]; then
+                if [[ -x "${DIR_NAME}/get-josm-user.sh" ]]; then
                     # update JOSM status after boot
                     ${SPOT} ${DIR_NAME}/get-josm-user.sh 1
                 fi
@@ -72,7 +72,7 @@ if mkdir $TMPDIR 2>/dev/null; then
     fi
 
     rm "${TMPFILE}"
-    if [ -x "${DIR_NAME}/get-josm-user.sh" ]; then
+    if [[ -x "${DIR_NAME}/get-josm-user.sh" ]]; then
         # update JOSM status
         ${SPOT} ${DIR_NAME}/get-josm-user.sh -1
     fi
