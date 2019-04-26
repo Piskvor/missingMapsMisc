@@ -28,8 +28,8 @@ function cleanup {
 if [[ -f "$INVOCATION_COUNT_FILE" ]]; then
 	# delete file if not touched for a moment
 	# you need to invoke the script within this time again
-	find "$INVOCATION_COUNT_FILE" -not -newermt '-10seconds' -print -delete > /dev/null 2> /dev/null || true
-	rmdir "${TMPDIR}" > /dev/null 2> /dev/null || true
+	find "$INVOCATION_COUNT_FILE" -not -newermt '-10seconds' -print -delete > /dev/null 2> /dev/null \
+	&& rmdir "${TMPDIR}" > /dev/null 2> /dev/null || true
 fi
 
 # if the file was deleted, or doesn't exist, pass the gate and launch
