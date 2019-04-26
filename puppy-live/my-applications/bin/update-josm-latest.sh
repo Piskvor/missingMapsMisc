@@ -27,7 +27,8 @@ if mkdir $TMPDIR 2>/dev/null; then
     wget --timestamping --quiet https://josm.openstreetmap.de/josm-tested.jar &
     wget --timestamping --quiet https://josm.openstreetmap.de/josm-latest.jar &
     cd /home/spot/missingMapsMisc
-    spot git pull --force
+    git pull --force
+    chown -R spot. .
     spot rsync $(pwd)/offlineLandingPage/* /home/spot/Web-Server -avP --no-owner --no-group
     wait
     touch /root/Web-Server/local.json
