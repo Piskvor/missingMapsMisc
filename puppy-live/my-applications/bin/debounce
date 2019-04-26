@@ -1,0 +1,36 @@
+#!/bin/bash
+
+set -euxo pipefail
+
+BASE_NAME="$(basename $0)-$(basename ${1:-})"
+TMP="/tmp"
+if [[ -d "$HOME/tmp" ]] ; then
+    TMP="$HOME/tmp"
+fi
+TMPDIR="$TMP/${BASE_NAME}-${USER}"
+INVOCATION_COUNT_FILE="${TMPDIR}/${BASE_NAME}-runner.pid"
+
+# clean up the directory
+function cleanup {
+	rm -f "${INVOCATION_COUNT_FILE}"
+	rmdir "${TMPDIR}"
+}
+
+if [[ -f "$INVOCATION_COUNT_FILE" ]]; then
+	# delete file if not touched for a moment
+	# you need to invoke the script within this time again
+	find "$INVOCATION_COUNT_FILE" -not -newermt '-10seconds' -print -delete
+	rmdir "${TMPDIR}"
+fi
+
+# if the file was deleted, or doesn't exist, pass the gate and launch
+if [[ ! -f "$INVOCATION_COUNT_FILE" ]]; then
+    if mkdir $TMPDIR 2>/dev/null; then
+        trap "cleanup" EXIT
+
+        # create file
+        touch "$INVOCATION_COUNT_FILE"
+        # run whatever we're trying to
+        exec $*
+    fi
+fi
